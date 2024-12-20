@@ -1,3 +1,6 @@
+#### How to import library
+from BasketIntelligence.create_season import CreateSeason
+
 #### Add year as an argument to retrieve the data from a season
 dataset = CreateSeason("2025")
 #### Use method to load per game data or adv stats
