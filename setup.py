@@ -8,7 +8,7 @@ setup(
         'pandas',
         'pyspark'
     ],
-    author=zhenxiay,
-    author_email=yu.zhenxiao.yz@gmail.com,
+    author="zhenxiay",
+    author_email="yu.zhenxiao.yz@gmail.com",
     url="https://github.com/zhenxiay/BaseketIntelligence"
 )
