@@ -13,6 +13,7 @@ class LoadSeasonData(CreateSeason):
         .getOrCreate()
     
     def load_per_game_to_lakehouse(self):
+        spark = self.get_spark()
         dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
         dataset_spark = spark.createDataFrame(dataset)
 
@@ -23,6 +24,7 @@ class LoadSeasonData(CreateSeason):
         print(f'load per game data of season {self.year} successfully!')
     
     def load_adv_stats_to_lakehouse(self):
+        spark = self.get_spark()
         dataset = CreateSeason(self.year).read_adv_stats().drop(columns=['Awards'])
         dataset_spark = spark.createDataFrame(dataset)
         
