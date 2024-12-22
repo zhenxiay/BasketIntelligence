@@ -14,8 +14,8 @@ dataset.read_adv_stats()
  Currently the libaray offers API to load data to Google big query or to MS Fabric lakehouse:
  ##### Create a dataset that is to be loaded with pollowing parameters:
  year, big query project id, dataset id and table id
- dataset = LoadSeasonData("2025","keen-vial-420113","BasketIntelligence","per_game_stats")
+ dataset = LoadSeasonData("2025","keen-vial-420113","BasketIntelligence")
  ##### Load to big query:
- dataset.load_per_game_to_big_query()
+ dataset.load_per_game_to_big_query("per_game_stats")
  ##### Load to MS fabric lakehouse:
  datasetload_adv_stats_to_lakehouse()
