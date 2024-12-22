@@ -32,7 +32,7 @@ class LoadSeasonData(CreateSeason):
         print(f'Data load to big query {table_id} successfully!')
 
     def load_adv_stats_to_big_query(self):
-        dataset = CreateSeason(self.year).read_adv_stats_game().drop(columns=['Awards'])
+        dataset = CreateSeason(self.year).read_adv_stats().drop(columns=['Awards'])
         table_id = f'{self.project}.{self.dataset}.{self.table_name}'
         client, job_config = self.create_big_query_client()
         job = client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
