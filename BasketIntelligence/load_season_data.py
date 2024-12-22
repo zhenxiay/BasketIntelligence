@@ -4,11 +4,10 @@ from google.cloud import bigquery
 from BasketIntelligence.create_season import CreateSeason
 
 class LoadSeasonData(CreateSeason):
-    def __init__(self, year, project, dataset, table_name):
+    def __init__(self, year, project, dataset):
         super().__init__(year=year)
         self.project = project
         self.dataset = dataset
-        self.table_name = table_name
 
     @staticmethod
     def get_spark():
@@ -24,16 +23,16 @@ class LoadSeasonData(CreateSeason):
         job_config = bigquery.LoadJobConfig(write_disposition="WRITE_TRUNCATE")
         return client, job_config
 
-    def load_per_game_to_big_query(self):
+    def load_per_game_to_big_query(self,table_name):
         dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
-        table_id = f'{self.project}.{self.dataset}.{self.table_name}'
+        table_id = f'{self.project}.{self.dataset}.{table_name}'
         client, job_config = self.create_big_query_client()
         job = client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
         print(f'Data load to big query {table_id} successfully!')
 
-    def load_adv_stats_to_big_query(self):
+    def load_adv_stats_to_big_query(self,table_name):
         dataset = CreateSeason(self.year).read_adv_stats().drop(columns=['Awards'])
-        table_id = f'{self.project}.{self.dataset}.{self.table_name}'
+        table_id = f'{self.project}.{self.dataset}.{table_name}'
         client, job_config = self.create_big_query_client()
         job = client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
         print(f'Data load to big query {table_id} successfully!')
