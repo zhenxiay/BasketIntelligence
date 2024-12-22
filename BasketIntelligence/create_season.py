@@ -50,10 +50,22 @@ class CreateSeason():
                             'PTS': 'float'
                           })
             return X
+        
+        def rename_columns(X):
+            column_mapping = {'3P%': '3P_pct',
+                              'eFG%': 'eFG_pct',
+                              'FT%': 'FT_pct',
+                              '2P%': '2P_pct'
+                              }
+            
+            X.rename(columns=column_mapping, 
+                     inplace=True)
+            return X
 
         df_output = (df_output
                    .pipe(drop_rows)
-                   .pipe(define_schema)                  
+                   .pipe(define_schema)
+                   .pipe(rename_columns)                  
                    )
 
         return df_output
@@ -96,7 +108,16 @@ class CreateSeason():
 
         
         def rename_columns(X):
-            column_mapping = {'WS/48': 'WS_48'}
+            column_mapping = {'WS/48': 'WS_48',
+                              'TS%': 'TS',
+                              'ORB%': 'ORB_rate',
+                              'DRB%': 'ORD_rate',
+                              'TRB%': 'TRB_rate',
+                              'AST%': 'AST_rate',
+                              'STL%': 'STL_rate',
+                              'BLK%': 'BLK_rate',
+                              'TOV%': 'TOV_rate',
+                              'USG%': 'USG_rate'}
             
             X.rename(columns=column_mapping, 
                      inplace=True)
