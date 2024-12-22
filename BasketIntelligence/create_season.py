@@ -94,6 +94,14 @@ class CreateSeason():
                           })
             return X
 
+        
+        def rename_columns(X):
+            column_mapping = {'WS/48': 'WS_48'}
+            
+            X.rename(columns=column_mapping, 
+                     inplace=True)
+            return X
+        
         def drop_rows(X):
             X = X.drop(X[X.Player == 'Player'].index)
             X = X.drop(X[X.Player == 'League Average'].index)
@@ -108,6 +116,7 @@ class CreateSeason():
         df_output = (df_output
                    .pipe(drop_rows)
                    .pipe(define_schema)
+                   .pipe(rename_columns)
                    .pipe(filter_rows)                  
                    )
 
