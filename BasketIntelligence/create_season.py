@@ -46,10 +46,19 @@ class CreateSeason():
             X = X.drop(X[X.Team == 'League Average'].index)
             return X
 
+        def rename_columns(X):
+            column_mapping = {'Attend.': 'Attend'
+                              }
+            
+            X.rename(columns=column_mapping, 
+                     inplace=True)
+            return X
+
         df_output = (df_output
                    .pipe(convert_multi_index)
                    .pipe(drop_na_columns)
-                   .pipe(drop_rows)                  
+                   .pipe(drop_rows)
+                   .pipe(rename_columns)                  
                    )
 
         return df_output
