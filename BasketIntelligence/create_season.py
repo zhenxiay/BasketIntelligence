@@ -48,13 +48,15 @@ class CreateSeason():
 
         def rename_columns(X):
             column_mapping = {'Attend.': 'Attend',
-                              'Attend./G': 'Attend_G',
-                              'dev_FT/FGA': 'dev_FT_FGA',
-                              'off_FT/FGA': 'off_FT_FGA'
+                              'Attend./G': 'Attend_G'
                               }
             
             X.rename(columns=column_mapping, 
                      inplace=True)
+
+            X.columns = X.columns.str.replace('%', 'pct', regex=False)
+            X.columns = X.columns.str.replace('/', '_', regex=False)
+
             return X
 
         df_output = (df_output
