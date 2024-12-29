@@ -47,7 +47,8 @@ class CreateSeason():
             return X
 
         def rename_columns(X):
-            column_mapping = {'Attend.': 'Attend'
+            column_mapping = {'Attend.': 'Attend',
+                              'Attend./G': 'Attend_G'
                               }
             
             X.rename(columns=column_mapping, 
