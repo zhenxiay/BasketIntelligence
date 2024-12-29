@@ -9,6 +9,7 @@ dataset = CreateSeason("2025")
 #### Use method to read per game data or adv stats
 dataset.read_stats_per_game()
 dataset.read_adv_stats()
+dataset.read_team_adv_stats()
 
  ### Method to load data
  Currently the libaray offers API to load data to Google big query or to MS Fabric lakehouse:
