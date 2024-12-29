@@ -7,6 +7,52 @@ class CreateSeason():
         self.year = year
         self.url_per_game = f'https://www.basketball-reference.com/leagues/NBA_{self.year}_per_game.html'
         self.url_adv_stats = f'https://www.basketball-reference.com/leagues/NBA_{self.year}_advanced.html'
+        self.url_team_stats = f'https://www.basketball-reference.com/leagues/NBA_{self.year}.html'
+    
+    
+    def read_team_adv_stats(self):
+        df = pd.read_html(self.url_team_stats,
+                          encoding = 'utf-8', 
+                          decimal='.', 
+                          thousands=',')
+        df_output = df[10]
+
+        # preperation for multiindex conversion for affected columns
+        df_off = df_output.pop('Offense Four Factors')
+        df_dev = df_output.pop('Defense Four Factors')
+
+        # define a function to turn columns for offensive and defensive four factors from nested columns to single index columns
+        def convert_multi_index(X):
+            # define columns that are to be converted 
+            cols_dev = ['eFG%','TOV%','DRB%','FT/FGA']
+            cols_off = ['eFG%','TOV%','ORB%','FT/FGA']
+
+            # drop first index level 
+            X = X.droplevel(0, axis=1)
+
+            # add converted single index columns back to the output dataframe
+            X = X.assign(**{f'dev_{col}': df_dev[col] for col in cols_dev})
+            X = X.assign(**{f'off_{col}': df_off[col] for col in cols_off})
+
+            return X
+
+        def drop_na_columns(X):
+            X = X.dropna(how='all',axis=1)
+
+            return X
+
+        
+        def drop_rows(X):
+            X = X.drop(X[X.Team == 'League Average'].index)
+            return X
+
+        df_output = (df_output
+                   .pipe(convert_multi_index)
+                   .pipe(drop_na_columns)
+                   .pipe(drop_rows)                  
+                   )
+
+        return df_output
     
     def read_stats_per_game(self):
         df = pd.read_html(self.url_per_game,
@@ -53,6 +99,7 @@ class CreateSeason():
         
         def rename_columns(X):
             column_mapping = {'3P%': '3P_pct',
+                              'FG%': 'FG_pct',
                               'eFG%': 'eFG_pct',
                               'FT%': 'FT_pct',
                               '2P%': '2P_pct'
