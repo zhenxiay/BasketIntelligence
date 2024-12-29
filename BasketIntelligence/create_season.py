@@ -54,7 +54,7 @@ class CreateSeason():
             X.rename(columns=column_mapping, 
                      inplace=True)
 
-            X.columns = X.columns.str.replace('%', 'pct', regex=False)
+            X.columns = X.columns.str.replace('%', '_pct', regex=False)
             X.columns = X.columns.str.replace('/', '_', regex=False)
 
             return X
