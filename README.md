@@ -1,4 +1,4 @@
-#### Link to an example dashboard (loop studio):
+#### Link to an example dashboard (looker studio):
 https://lookerstudio.google.com/reporting/10cd2c10-17f3-4e0e-aa9c-01fb6470516e/page/x05ZE
 
 #### How to import library
