@@ -33,6 +33,7 @@ jobs:
         # run yapf to format the scripts automatically
         yapf -i ./BasketIntelligence/create_season.py
         yapf -i ./BasketIntelligence/load_season_data.py
+				yapf -i ./tests/test_create_season.py
         yapf -i ./setup.py
     - name: Lint with flake8
       run: |
