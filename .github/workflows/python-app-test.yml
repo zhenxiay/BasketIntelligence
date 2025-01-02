@@ -43,4 +43,4 @@ jobs:
     - name: run pytest
       run: |
         pip install BasketIntelligence
-        pytest Tests/
+        pytest tests/
