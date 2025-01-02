@@ -5,7 +5,7 @@ name: Python application
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "feature_pytest" ]
   pull_request:
     branches: none
 
@@ -42,5 +42,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: run pytest
       run: |
-        pip install BasketIntelligence
         pytest tests/
