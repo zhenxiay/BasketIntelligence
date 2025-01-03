@@ -5,7 +5,7 @@ name: Python application
 
 on:
   push:
-    branches: [ "main", "test", "feature_pytest" ]
+    branches: [ "main", "test" ]
   pull_request:
     branches: none
 
@@ -28,17 +28,21 @@ jobs:
         python -m pip install --upgrade pip
         pip install yapf flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Check inconsistencies with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --exit-zero --select=E111 --show-source --statistics
     - name: Automatic Formatting
       run: |
         # run yapf to format the scripts automatically
-        yapf -i  --style "use_tabs=True" ./BasketIntelligence/create_season.py
-        yapf -i --style "use_tabs=True" ./BasketIntelligence/load_season_data.py
+        yapf -i --style "use_tabs=False" ./BasketIntelligence/create_season.py
+        yapf -i --style "use_tabs=False" ./BasketIntelligence/load_season_data.py
         yapf -i ./setup.py
-        yapf -i --style "use_tabs=True" ./tests/test_create_season.py
+        yapf -i --style "use_tabs=False" ./tests/test_create_season.py
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --select=E9,F63,F7,F82,E111 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: run pytest
