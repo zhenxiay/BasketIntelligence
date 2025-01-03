@@ -5,7 +5,7 @@ name: Python application
 
 on:
   push:
-    branches: [ "main", "feature_pytest" ]
+    branches: [ "main", "test" ]
   pull_request:
     branches: none
 
@@ -31,18 +31,18 @@ jobs:
     - name: Automatic Formatting
       run: |
         # run yapf to format the scripts automatically
-        yapf -i ./BasketIntelligence/create_season.py
-        yapf -i ./BasketIntelligence/load_season_data.py
+        yapf -i --style '{use_tabs: False}' ./BasketIntelligence/create_season.py
+        yapf -i --style '{use_tabs: False}' ./BasketIntelligence/load_season_data.py
         yapf -i ./setup.py
-        yapf -i ./tests/test_create_season.py
+        yapf -i --style '{use_tabs=False}' ./tests/test_create_season.py
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --select=E9,F63,F7,F82,E111 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: run pytest
       run: |
         pip install lxml
-        pip install git+https://github.com/zhenxiay/BasketIntelligence.git
+        pip install git+https://github.com/zhenxiay/BasketIntelligence.git@test
         pytest tests/

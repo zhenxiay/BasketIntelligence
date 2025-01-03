@@ -9,13 +9,60 @@ class CreateSeason():
         self.url_adv_stats = f'https://www.basketball-reference.com/leagues/NBA_{self.year}_advanced.html'
         self.url_team_stats = f'https://www.basketball-reference.com/leagues/NBA_{self.year}.html'
     
-    
-    def read_team_adv_stats(self):
-        df = pd.read_html(self.url_team_stats,
+    @staticmethod
+    # Standard function which is going to be used by the read functions below for data cleaning
+    def drop_summary_rows(X):
+        X = X.drop(X[X.Team == 'League Average'].index)
+        return X
+        
+    def read_team_shooting(self):
+        list = pd.read_html(self.url_team_stats,
                           encoding = 'utf-8', 
                           decimal='.', 
                           thousands=',')
-        df_output = df[10]
+        df_output = list[11]
+        
+        # preperation for multiindex conversion for affected columns
+        df_fg_attempts = df_output.pop('% of FGA by Distance')
+        df_fg_pct = df_output.pop('FG% by Distance')
+        df_corner_pct = df_output.pop('Corner')
+        
+        def convert_multi_index(X):
+
+    		# drop first index level 
+            X = X.droplevel(0, axis=1)
+
+    		# add converted single index columns back to the output dataframe
+            X = X.assign(**{f'{col}-FGA': df_fg_attempts[col] for col in df_fg_attempts.columns})
+            X = X.assign(**{f'{col}-pct': df_fg_pct[col] for col in df_fg_pct.columns})
+            X = X.assign(**{f'{col}-corner': df_corner_pct[col] for col in df_corner_pct.columns})
+    
+        	# define a function to turn columns for shoot attempts and pct per distance and corner from nested columns to single index columns
+            selected_columns = X.filter(regex='(Team|-FGA|-pct|-corner)').columns
+            X = X[selected_columns]
+
+            return X
+            
+        def rename_columns(X):
+            X.columns = X.columns.str.replace('%', '', regex=False)
+            
+            return X            
+        
+        # shape output dataframe with pipe and the functions defined above         
+        df_output = (df_output
+                .pipe(convert_multi_index)
+                .pipe(self.drop_summary_rows)
+                .pipe(rename_columns)                  
+                )
+
+        return df_output
+    
+    def read_team_adv_stats(self):
+        list = pd.read_html(self.url_team_stats,
+                          encoding = 'utf-8', 
+                          decimal='.', 
+                          thousands=',')
+        df_output = list[10]
 
         # preperation for multiindex conversion for affected columns
         df_off = df_output.pop('Offense Four Factors')
@@ -41,11 +88,6 @@ class CreateSeason():
 
             return X
 
-        
-        def drop_rows(X):
-            X = X.drop(X[X.Team == 'League Average'].index)
-            return X
-
         def rename_columns(X):
             column_mapping = {'Attend.': 'Attend',
                               'Attend./G': 'Attend_G'
@@ -62,18 +104,18 @@ class CreateSeason():
         df_output = (df_output
                    .pipe(convert_multi_index)
                    .pipe(drop_na_columns)
-                   .pipe(drop_rows)
+                   .pipe(self.drop_summary_rows)
                    .pipe(rename_columns)                  
                    )
 
         return df_output
     
     def read_stats_per_game(self):
-        df = pd.read_html(self.url_per_game,
+        list = pd.read_html(self.url_per_game,
                           encoding = 'utf-8', 
                           decimal='.', 
                           thousands=',')
-        df_output = df[0]
+        df_output = list[0]
 
         def drop_rows(X):
             X = X.drop(X[X.Player == 'Player'].index)
@@ -132,7 +174,7 @@ class CreateSeason():
         return df_output
 
     def read_adv_stats(self):
-        df = pd.read_html(self.url_adv_stats,
+        list = pd.read_html(self.url_adv_stats,
                           encoding = 'utf-8', 
                           decimal='.', 
                           thousands=',')
@@ -193,7 +235,7 @@ class CreateSeason():
             X = X[X['MP'] > 100]
             return X
 
-        df_output = df[0]
+        df_output = list[0]
 
         df_output = (df_output
                    .pipe(drop_rows)
