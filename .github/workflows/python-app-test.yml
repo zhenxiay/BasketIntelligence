@@ -28,17 +28,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install yapf flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Check inconsistencies with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --exit-zero --select=E111 --show-source --statistics
     - name: Automatic Formatting
       run: |
         # run yapf to format the scripts automatically
-        yapf -i --style "use_tabs=False" ./BasketIntelligence/create_season.py
-        yapf -i --style "use_tabs=False" ./BasketIntelligence/load_season_data.py
+        yapf -i --style '{use_tabs: False}' ./BasketIntelligence/create_season.py
+        yapf -i --style '{use_tabs: False}' ./BasketIntelligence/load_season_data.py
         yapf -i ./setup.py
-        yapf -i --style "use_tabs=False" ./tests/test_create_season.py
+        yapf -i --style '{use_tabs=False}' ./tests/test_create_season.py
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
