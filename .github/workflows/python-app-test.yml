@@ -44,5 +44,5 @@ jobs:
     - name: run pytest
       run: |
         pip install lxml
-        pip install git+https://github.com/zhenxiay/BasketIntelligence.git
+        pip install git+https://github.com/zhenxiay/BasketIntelligence.git@test
         pytest tests/
