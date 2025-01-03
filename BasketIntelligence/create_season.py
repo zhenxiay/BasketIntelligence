@@ -27,7 +27,7 @@ class CreateSeason():
         df_fg_pct = df_output.pop('FG% by Distance')
         df_corner_pct = df_output.pop('Corner')
         
-        def convert_multi_index(X):
+		def convert_multi_index(X):
 
     		# drop first index level 
 			X = X.droplevel(0, axis=1)
