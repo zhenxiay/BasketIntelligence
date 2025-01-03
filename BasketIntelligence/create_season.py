@@ -27,33 +27,33 @@ class CreateSeason():
         df_fg_pct = df_output.pop('FG% by Distance')
         df_corner_pct = df_output.pop('Corner')
         
-		def convert_multi_index(X):
+        def convert_multi_index(X):
 
     		# drop first index level 
-			X = X.droplevel(0, axis=1)
+            X = X.droplevel(0, axis=1)
 
     		# add converted single index columns back to the output dataframe
-			X = X.assign(**{f'{col}-FGA': df_fg_attempts[col] for col in df_fg_attempts.columns})
-			X = X.assign(**{f'{col}-pct': df_fg_pct[col] for col in df_fg_pct.columns})
-			X = X.assign(**{f'{col}-corner': df_corner_pct[col] for col in df_corner_pct.columns})
+            X = X.assign(**{f'{col}-FGA': df_fg_attempts[col] for col in df_fg_attempts.columns})
+            X = X.assign(**{f'{col}-pct': df_fg_pct[col] for col in df_fg_pct.columns})
+            X = X.assign(**{f'{col}-corner': df_corner_pct[col] for col in df_corner_pct.columns})
     
         	# define a function to turn columns for shoot attempts and pct per distance and corner from nested columns to single index columns
-			selected_columns = X.filter(regex='(Team|-FGA|-pct|-corner)').columns
-			X = X[selected_columns]
+            selected_columns = X.filter(regex='(Team|-FGA|-pct|-corner)').columns
+            X = X[selected_columns]
 
-			return X
+            return X
             
-		def rename_columns(X):
-			X.columns = X.columns.str.replace('%', '', regex=False)
+        def rename_columns(X):
+            X.columns = X.columns.str.replace('%', '', regex=False)
             
-			return X            
+            return X            
         
         # shape output dataframe with pipe and the functions defined above         
-		df_output = (df_output
-				.pipe(convert_multi_index)
-				.pipe(self.drop_summary_rows)
-				.pipe(rename_columns)                  
-                   )
+        df_output = (df_output
+                .pipe(convert_multi_index)
+                .pipe(self.drop_summary_rows)
+                .pipe(rename_columns)                  
+                )
 
         return df_output
     
