@@ -31,10 +31,10 @@ jobs:
     - name: Automatic Formatting
       run: |
         # run yapf to format the scripts automatically
-        yapf -i ./BasketIntelligence/create_season.py
-        yapf -i ./BasketIntelligence/load_season_data.py
+        yapf -i  --style "use_tabs=True" ./BasketIntelligence/create_season.py
+        yapf -i --style "use_tabs=True" ./BasketIntelligence/load_season_data.py
         yapf -i ./setup.py
-        yapf -i ./tests/test_create_season.py
+        yapf -i --style "use_tabs=True" ./tests/test_create_season.py
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
