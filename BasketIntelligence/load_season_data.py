@@ -27,21 +27,28 @@ class LoadSeasonData(CreateSeason):
         dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
         table_id = f'{self.project}.{self.dataset}.{table_name}'
         client, job_config = self.create_big_query_client()
-        job = client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
+        client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
         print(f'Data load to big query {table_id} successfully!')
 
     def load_adv_stats_to_big_query(self,table_name):
         dataset = CreateSeason(self.year).read_adv_stats().drop(columns=['Awards'])
         table_id = f'{self.project}.{self.dataset}.{table_name}'
         client, job_config = self.create_big_query_client()
-        job = client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
+        client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
         print(f'Data load to big query {table_id} successfully!')
 
     def load_team_adv_stats_to_big_query(self,table_name):
         dataset = CreateSeason(self.year).read_team_adv_stats()
         table_id = f'{self.project}.{self.dataset}.{table_name}'
         client, job_config = self.create_big_query_client()
-        job = client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
+        client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
+        print(f'Data load to big query {table_id} successfully!')
+        
+    def load_team_shooting_to_big_query(self,table_name):
+        dataset = CreateSeason(self.year).read_team_shooting()
+        table_id = f'{self.project}.{self.dataset}.{table_name}'
+        client, job_config = self.create_big_query_client()
+        client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
         print(f'Data load to big query {table_id} successfully!')
     
     def load_per_game_to_lakehouse(self):
@@ -49,7 +56,7 @@ class LoadSeasonData(CreateSeason):
         dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
         dataset_spark = spark.createDataFrame(dataset)
 
-        drop_action = spark.sql(f"DROP TABLE IF EXISTS basketball_reference_per_game_{self.year}")
+        spark.sql(f"DROP TABLE IF EXISTS basketball_reference_per_game_{self.year}")
         print(f"Dropped table basketball_reference_per_game_{self.year} in the lakehouse...")
 
         dataset_spark.write.saveAsTable(f"basketball_reference_per_game_{self.year}")
@@ -60,7 +67,7 @@ class LoadSeasonData(CreateSeason):
         dataset = CreateSeason(self.year).read_adv_stats().drop(columns=['Awards'])
         dataset_spark = spark.createDataFrame(dataset)
         
-        drop_action = spark.sql(f"DROP TABLE IF EXISTS basketball_reference_adv_stats_{self.year}")
+        spark.sql(f"DROP TABLE IF EXISTS basketball_reference_adv_stats_{self.year}")
         print(f"Dropped table basketball_reference_adv_stats_{self.year} in the lakehouse...")
 
         dataset_spark.write.saveAsTable(f"basketball_reference_adv_stats_{self.year}")
@@ -71,8 +78,20 @@ class LoadSeasonData(CreateSeason):
         dataset = CreateSeason(self.year).read_team_adv_stats()
         dataset_spark = spark.createDataFrame(dataset)
         
-        drop_action = spark.sql(f"DROP TABLE IF EXISTS basketball_reference_team_adv_stats_{self.year}")
+        spark.sql(f"DROP TABLE IF EXISTS basketball_reference_team_adv_stats_{self.year}")
         print(f"Dropped table basketball_reference_adv_stats_{self.year} in the lakehouse...")
 
         dataset_spark.write.saveAsTable(f"basketball_reference_team_adv_stats_{self.year}")
         print(f'load per game data of season {self.year} successfully!')
+        
+    def load_team_shooting_to_lakehouse(self):
+        spark = self.get_spark()
+        dataset = CreateSeason(self.year).read_team_shooting()
+        dataset_spark = spark.createDataFrame(dataset)
+        
+        spark.sql(f"DROP TABLE IF EXISTS basketball_reference_team_shooting_{self.year}")
+        print(f"Dropped table basketball_reference_adv_stats_{self.year} in the lakehouse...")
+
+        dataset_spark.write.saveAsTable(f"basketball_reference_team_shooting_{self.year}")
+        print(f'load per game data of season {self.year} successfully!')
+        

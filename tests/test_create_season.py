@@ -7,7 +7,13 @@ def test_read_team_adv_stats():
   assert columns_count == 28
 
 def test_read_stats_per_game():
-  
-  dataset = CreateSeason("2025")
-  columns_count = len(dataset.read_stats_per_game().columns)
-  assert columns_count == 31
+    
+  	dataset = CreateSeason("2025")
+  	columns_count = len(dataset.read_stats_per_game().columns)
+  	assert columns_count == 31
+
+def test_read_team_shooting():
+	dataset = CreateSeason("2025")
+  	columns_count = len(dataset.read_team_shooting().columns)
+	assert columns_count == 15
+    
