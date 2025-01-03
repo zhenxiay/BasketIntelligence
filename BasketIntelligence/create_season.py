@@ -9,7 +9,7 @@ class CreateSeason():
         self.url_adv_stats = f'https://www.basketball-reference.com/leagues/NBA_{self.year}_advanced.html'
         self.url_team_stats = f'https://www.basketball-reference.com/leagues/NBA_{self.year}.html'
     
-    @static
+    @staticmethod
     # Standard function which is going to be used by the read functions below for data cleaning
     def drop_summary_rows(X):
         X = X.drop(X[X.Team == 'League Average'].index)
