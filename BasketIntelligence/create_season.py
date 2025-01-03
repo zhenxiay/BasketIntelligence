@@ -24,8 +24,8 @@ class CreateSeason():
         
         # preperation for multiindex conversion for affected columns
         df_fg_attempts = df_output.pop('% of FGA by Distance')
-		df_fg_pct = df_output.pop('FG% by Distance')
-		df_corner_pct = df_output.pop('Corner')
+        df_fg_pct = df_output.pop('FG% by Distance')
+        df_corner_pct = df_output.pop('Corner')
         
         def convert_multi_index(X):
 
