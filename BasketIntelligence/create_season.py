@@ -33,12 +33,12 @@ class CreateSeason():
             X = X.droplevel(0, axis=1)
 
     		# add converted single index columns back to the output dataframe
-            X = X.assign(**{f'{col}-FGA': df_fg_attempts[col] for col in df_fg_attempts.columns})
-            X = X.assign(**{f'{col}-pct': df_fg_pct[col] for col in df_fg_pct.columns})
-            X = X.assign(**{f'{col}-corner': df_corner_pct[col] for col in df_corner_pct.columns})
+            X = X.assign(**{f'FGA-{col}': df_fg_attempts[col] for col in df_fg_attempts.columns})
+            X = X.assign(**{f'pct-{col}': df_fg_pct[col] for col in df_fg_pct.columns})
+            X = X.assign(**{f'corner-{col}': df_corner_pct[col] for col in df_corner_pct.columns})
     
         	# define a function to turn columns for shoot attempts and pct per distance and corner from nested columns to single index columns
-            selected_columns = X.filter(regex='(Team|-FGA|-pct|-corner)').columns
+            selected_columns = X.filter(regex='(Team|FGA-|pct-|corner-)').columns
             X = X[selected_columns]
 
             return X
