@@ -45,6 +45,7 @@ class CreateSeason():
             
         def rename_columns(X):
             X.columns = X.columns.str.replace('%', '', regex=False)
+            X.columns = X.columns.str.replace('-', '_', regex=False)
             
             return X            
         
