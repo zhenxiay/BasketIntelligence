@@ -9,7 +9,7 @@ class CreateSeason():
         self.url_adv_stats = f'https://www.basketball-reference.com/leagues/NBA_{self.year}_advanced.html'
         self.url_team_stats = f'https://www.basketball-reference.com/leagues/NBA_{self.year}.html'
     
-    @static
+    @staticmethod
     # Standard function which is going to be used by the read functions below for data cleaning
     def drop_summary_rows(X):
         X = X.drop(X[X.Team == 'League Average'].index)
@@ -24,13 +24,13 @@ class CreateSeason():
         
         # preperation for multiindex conversion for affected columns
         df_fg_attempts = df_output.pop('% of FGA by Distance')
-		df_fg_pct = df_output.pop('FG% by Distance')
-		df_corner_pct = df_output.pop('Corner')
+        df_fg_pct = df_output.pop('FG% by Distance')
+        df_corner_pct = df_output.pop('Corner')
         
         def convert_multi_index(X):
 
     		# drop first index level 
-    		X = X.droplevel(0, axis=1)
+            X = X.droplevel(0, axis=1)
 
     		# add converted single index columns back to the output dataframe
     		X = X.assign(**{f'FGA-{col}': df_fg_attempts[col] for col in df_fg_attempts.columns})
@@ -39,9 +39,8 @@ class CreateSeason():
     
         	# define a function to turn columns for shoot attempts and pct per distance and corner from nested columns to single index columns
     		selected_columns = X.filter(regex='(Team|FGA-|pct-|corner-)').columns
-    		X = X[selected_columns]
 
-    		return X
+            return X
             
         def rename_columns(X):
             X.columns = X.columns.str.replace('%', '', regex=False)
@@ -51,10 +50,10 @@ class CreateSeason():
         
         # shape output dataframe with pipe and the functions defined above         
         df_output = (df_output
-                   .pipe(convert_multi_index)
-                	.pipe(self.drop_summary_rows)
-                   .pipe(rename_columns)                  
-                   )
+                .pipe(convert_multi_index)
+                .pipe(self.drop_summary_rows)
+                .pipe(rename_columns)                  
+                )
 
         return df_output
     
