@@ -39,6 +39,7 @@ class CreateSeason():
     
         	# define a function to turn columns for shoot attempts and pct per distance and corner from nested columns to single index columns
     		selected_columns = X.filter(regex='(Team|FGA-|pct-|corner-)').columns
+            X = X[selected_columns]
 
             return X
             
