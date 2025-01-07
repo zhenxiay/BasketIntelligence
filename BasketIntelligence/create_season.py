@@ -16,8 +16,8 @@ class CreateSeason():
         return X
 
     @staticmethod
-    def add_season_number(self, X):
-        X['Season'] = self.year
+    def add_season_number(X, season):
+        X['Season'] = season
         return X
         
     def read_team_shooting(self):
@@ -59,7 +59,7 @@ class CreateSeason():
                 .pipe(convert_multi_index)
                 .pipe(self.drop_summary_rows)
                 .pipe(rename_columns)
-                .pipe(self.add_season_number)
+                .pipe(self.add_season_number, season = self.year)
                 )
 
         return df_output
@@ -113,7 +113,7 @@ class CreateSeason():
                    .pipe(drop_na_columns)
                    .pipe(self.drop_summary_rows)
                    .pipe(rename_columns)
-                   .pipe(self.add_season_number)
+                   .pipe(self.add_season_number, season = self.year)
                    )
 
         return df_output
@@ -177,7 +177,7 @@ class CreateSeason():
                    .pipe(drop_rows)
                    .pipe(define_schema)
                    .pipe(rename_columns)
-                   .pipe(self.add_season_number)
+                   .pipe(self.add_season_number, season = self.year)
                    )
 
         return df_output
@@ -251,7 +251,7 @@ class CreateSeason():
                    .pipe(define_schema)
                    .pipe(rename_columns)
                    .pipe(filter_rows)
-                   .pipe(self.add_season_number)
+                   .pipe(self.add_season_number, season = self.year)
                    )
 
         return df_output
