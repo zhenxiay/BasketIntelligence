@@ -16,7 +16,7 @@ class CreateSeason():
         return X
 
     @staticmethod
-    def add_season_number(X):
+    def add_season_number(self, X):
         X['Season'] = self.year
         return X
         
