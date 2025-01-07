@@ -14,6 +14,11 @@ class CreateSeason():
     def drop_summary_rows(X):
         X = X.drop(X[X.Team == 'League Average'].index)
         return X
+
+    @staticmethod
+    def add_season_number(X):
+        X['Season'] = self.year
+        return X
         
     def read_team_shooting(self):
         list = pd.read_html(self.url_team_stats,
@@ -53,7 +58,8 @@ class CreateSeason():
         df_output = (df_output
                 .pipe(convert_multi_index)
                 .pipe(self.drop_summary_rows)
-                .pipe(rename_columns)                  
+                .pipe(rename_columns)
+                .pipe(self.add_season_number)
                 )
 
         return df_output
@@ -106,7 +112,8 @@ class CreateSeason():
                    .pipe(convert_multi_index)
                    .pipe(drop_na_columns)
                    .pipe(self.drop_summary_rows)
-                   .pipe(rename_columns)                  
+                   .pipe(rename_columns)
+                   .pipe(self.add_season_number)
                    )
 
         return df_output
@@ -169,7 +176,8 @@ class CreateSeason():
         df_output = (df_output
                    .pipe(drop_rows)
                    .pipe(define_schema)
-                   .pipe(rename_columns)                  
+                   .pipe(rename_columns)
+                   .pipe(self.add_season_number)
                    )
 
         return df_output
@@ -242,7 +250,8 @@ class CreateSeason():
                    .pipe(drop_rows)
                    .pipe(define_schema)
                    .pipe(rename_columns)
-                   .pipe(filter_rows)                  
+                   .pipe(filter_rows)
+                   .pipe(self.add_season_number)
                    )
 
         return df_output
