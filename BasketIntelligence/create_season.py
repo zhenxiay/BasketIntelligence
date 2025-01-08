@@ -12,7 +12,10 @@ class CreateSeason():
     @staticmethod
     # Standard function which is going to be used by the read functions below for data cleaning
     def drop_summary_rows(X):
-        X = X.drop(X[X.Team == 'League Average'].index)
+        try:
+            X = X.drop(X[X.Team == 'League Average'].index)
+        except AttributeError:
+            X = X.drop(X[X.Tm == 'League Average'].index)
         return X
 
     @staticmethod
