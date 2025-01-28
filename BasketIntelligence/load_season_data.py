@@ -18,7 +18,7 @@ class LoadSeasonData(CreateSeason):
         return spark
 
     @staticmethod
-    def data_ingestion_lakehouse(dataset,name) -> None:
+    def data_ingestion_lakehouse(self,dataset,name) -> None:
         spark = self.get_spark()
         dataset_spark = spark.createDataFrame(dataset)
         
@@ -35,7 +35,7 @@ class LoadSeasonData(CreateSeason):
         return client, job_config
 
     @staticmethod
-    def data_ingestion_big_query(dataset,table_name) -> None:
+    def data_ingestion_big_query(self,dataset,table_name) -> None:
         table_id = f'{self.project}.{self.dataset_name}.{table_name}'
         client, job_config = self.create_big_query_client()
         client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
@@ -47,15 +47,15 @@ class LoadSeasonData(CreateSeason):
 
     def load_adv_stats_to_big_query(self,table_name) -> None:
         dataset = CreateSeason(self.year).read_adv_stats().drop(columns=['Awards'])
-        data_ingestion_big_query(dataset,table_name)
+        self.data_ingestion_big_query(dataset,table_name)
 
     def load_team_adv_stats_to_big_query(self,table_name) -> None:
         dataset = CreateSeason(self.year).read_team_adv_stats()
-        data_ingestion_big_query(dataset,table_name)
+        self.data_ingestion_big_query(dataset,table_name)
         
     def load_team_shooting_to_big_query(self,table_name) -> None:
         dataset = CreateSeason(self.year).read_team_shooting()
-        data_ingestion_big_query(dataset,table_name)
+        self.data_ingestion_big_query(dataset,table_name)
     
     def load_per_game_to_lakehouse(self) -> None:
         dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
