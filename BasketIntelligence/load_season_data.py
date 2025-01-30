@@ -8,7 +8,7 @@ class LoadSeasonData(CreateSeason):
         super().__init__(year=year)
         self.project = project
         self.dataset_name = dataset_name
-
+############ database setups for MS fabric lakehouse ###############
     @staticmethod
     def get_spark():
         spark = SparkSession \
@@ -17,7 +17,6 @@ class LoadSeasonData(CreateSeason):
             .getOrCreate()
         return spark
 
-    @staticmethod
     def data_ingestion_lakehouse(self,dataset,name) -> None:
         spark = self.get_spark()
         dataset_spark = spark.createDataFrame(dataset)
@@ -27,20 +26,19 @@ class LoadSeasonData(CreateSeason):
 
         dataset_spark.write.saveAsTable(f"basketball_reference_{name}_{self.year}")
         print(f'load table basketball_reference_{name}_{self.year} successfully!')        
-
+############ database setups for big query ###############
     @staticmethod
     def create_big_query_client():
         client = bigquery.Client()
         job_config = bigquery.LoadJobConfig(write_disposition="WRITE_TRUNCATE")
         return client, job_config
 
-    @staticmethod
     def data_ingestion_big_query(self,dataset,table_name) -> None:
         table_id = f'{self.project}.{self.dataset_name}.{table_name}'
         client, job_config = self.create_big_query_client()
         client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
         print(f'Data load to big query {table_id} successfully!')
-
+############ Methods for loading data into bigquery or fabric lakehose ##########
     def load_per_game_to_big_query(self,table_name) -> None:
         dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
         self.data_ingestion_big_query(dataset,table_name)
