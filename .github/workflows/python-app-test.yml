@@ -45,4 +45,8 @@ jobs:
       run: |
         pip install lxml
         pip install git+https://github.com/zhenxiay/BasketIntelligence.git@test
-        pytest tests/
+        pytest tests/pyTest/
+    - name: run data quality test (great expectations)
+      run: |
+        pip install great_expectations
+        python3 tests/run_great_expectations.py
