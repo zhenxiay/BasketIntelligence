@@ -34,7 +34,8 @@ jobs:
         yapf -i --style '{use_tabs: False}' ./BasketIntelligence/create_season.py
         yapf -i --style '{use_tabs: False}' ./BasketIntelligence/load_season_data.py
         yapf -i ./setup.py
-        yapf -i --style '{use_tabs=False}' ./tests/test_create_season.py
+        yapf -i --style '{use_tabs=False}' ./tests/pyTest/test_create_season.py
+        yapf -i --style '{use_tabs=False}' ./tests/data_quality_test/run_great_expectations.py
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -45,4 +46,8 @@ jobs:
       run: |
         pip install lxml
         pip install git+https://github.com/zhenxiay/BasketIntelligence.git@test
-        pytest tests/
+        pytest tests/pyTest/
+    - name: run data quality test (great expectations)
+      run: |
+        pip install great_expectations
+        python3 tests/data_quality_test/run_great_expectations.py

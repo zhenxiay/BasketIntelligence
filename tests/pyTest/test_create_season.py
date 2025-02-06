@@ -16,4 +16,3 @@ def test_read_team_shooting():
 		dataset = CreateSeason("2025")
 		columns_count = len(dataset.read_team_shooting().columns)
 		assert columns_count == 16
-    
