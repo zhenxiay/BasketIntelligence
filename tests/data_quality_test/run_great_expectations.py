@@ -17,7 +17,11 @@ batch_definition = data_asset.add_batch_definition_whole_dataframe("batch defini
 batch = batch_definition.get_batch(batch_parameters={"dataframe": df})
 
 expectation = gx.expectations.ExpectColumnValuesToBeBetween(
-    column="G", min_value=0, max_value=82
+    column="G", min_value=0, max_value=82,
+    column="FG_pct", min_value=0, max_value=1,
+    column="2P_pct", min_value=0, max_value=1,
+    column="FT_pct", min_value=0, max_value=1,
+    column="3P_pct", min_value=0, max_value=1
 )
 
 validation_result = batch.validate(expectation)
