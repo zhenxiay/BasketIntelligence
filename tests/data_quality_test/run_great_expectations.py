@@ -16,14 +16,14 @@ data_asset = data_source.add_dataframe_asset(name="pd dataframe asset")
 batch_definition = data_asset.add_batch_definition_whole_dataframe("batch definition")
 batch = batch_definition.get_batch(batch_parameters={"dataframe": df})
 
-expectation = gx.expectations.ExpectColumnValuesToBeBetween(
-    column="G", min_value=0, max_value=82,
-    column="FG_pct", min_value=0, max_value=1,
-    column="2P_pct", min_value=0, max_value=1,
-    column="FT_pct", min_value=0, max_value=1,
-    column="3P_pct", min_value=0, max_value=1
+expectation_game_count = gx.expectations.ExpectColumnValuesToBeBetween(
+    column="G", min_value=0, max_value=82
 )
 
-validation_result = batch.validate(expectation)
+expectation_FG_pct = gx.expectations.ExpectColumnValuesToBeBetween(
+    column="FG_pct", min_value=0, max_value=1
+)
 
-print(validation_result)
+for e in [expectation_game_count, expectation_FG_pct]:
+    validation_result = batch.validate(e)
+    print(validation_result)
