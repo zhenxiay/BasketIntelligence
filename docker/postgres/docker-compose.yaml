@@ -7,7 +7,7 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=basket_intelligence
     volumes:
-      - "./asket_intelligence_postgres_data:/var/lib/postgresql/data:rw"
+      - "C:/Users/zhenxiay/Downloads/basket_intelligence_postgres_data:/var/lib/postgresql/data:rw"
     ports:
       - "5432:5432"
     networks:
@@ -21,7 +21,10 @@ services:
       - "8080:80"
     networks:
       - postgres-db-network
+    name: postgres_db
 
 networks:
   postgres-db-network:
     driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
