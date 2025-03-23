@@ -1,6 +1,7 @@
 
 from pyspark.sql import SparkSession
 from google.cloud import bigquery
+from sqlalchemy import create_engine
 from BasketIntelligence.create_season import CreateSeason
 
 class LoadSeasonData(CreateSeason):
@@ -8,7 +9,26 @@ class LoadSeasonData(CreateSeason):
         super().__init__(year=year)
         self.project = project
         self.dataset_name = dataset_name
-############ database setups for MS fabric lakehouse ###############
+
+############ database setups for postgres SQL ################################
+
+    @staticmethod
+    def connect_postgres(user, pwd, host, db):
+        engine = create_engine(f'postgresql://{user}:{pwd}@{host}:5432/{db}')
+        return engine
+    
+    def data_ingestion_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+        engine = self.connect_postgres(user, pwd, host, db)
+        engine.connect()
+
+        dataset.to_sql(table_name,
+                       con=engine,
+                       if_exists="replace")
+
+        print(f'{table_name} load to postgres database {host}/{db} successfully!')
+
+############ database setups for MS fabric lakehouse ######################
+
     @staticmethod
     def get_spark():
         spark = SparkSession \
@@ -25,8 +45,10 @@ class LoadSeasonData(CreateSeason):
         print(f"Dropped table basketball_reference_{name}_{self.year} in the lakehouse...")
 
         dataset_spark.write.saveAsTable(f"basketball_reference_{name}_{self.year}")
-        print(f'load table basketball_reference_{name}_{self.year} successfully!')        
+        print(f'load table basketball_reference_{name}_{self.year} successfully!')
+
 ############ database setups for big query ###############
+
     @staticmethod
     def create_big_query_client():
         client = bigquery.Client()
@@ -38,7 +60,27 @@ class LoadSeasonData(CreateSeason):
         client, job_config = self.create_big_query_client()
         client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
         print(f'Data load to big query {table_id} successfully!')
-############ Methods for loading data into bigquery or fabric lakehose ##########
+
+############ Methods for loading data into postgres SQL ##########################
+
+    def load_per_game_to_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+        dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
+        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+
+    def load_adv_stats_to_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+        dataset = CreateSeason(self.year).read_adv_stats().drop(columns=['Awards'])
+        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+
+    def load_team_adv_stats_to_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+        dataset = CreateSeason(self.year).read_team_adv_stats()
+        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+
+    def load_team_shooting_to_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+        dataset = CreateSeason(self.year).read_team_shooting()
+        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+
+############ Methods for loading data into bigquery ###############################
+
     def load_per_game_to_big_query(self,table_name) -> None:
         dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
         self.data_ingestion_big_query(dataset,table_name)
@@ -54,6 +96,8 @@ class LoadSeasonData(CreateSeason):
     def load_team_shooting_to_big_query(self,table_name) -> None:
         dataset = CreateSeason(self.year).read_team_shooting()
         self.data_ingestion_big_query(dataset,table_name)
+
+############ Methods for loading data into fabric lakehose ############################
     
     def load_per_game_to_lakehouse(self) -> None:
         dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])

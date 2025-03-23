@@ -5,9 +5,9 @@ services:
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=basket_intelligence
+      - POSTGRES_DB==${DB_NAME}
     volumes:
-      - "C:/Users/zhenxiay/Downloads/basket_intelligence_postgres_data:/var/lib/postgresql/data:rw"
+      - "C:/Users/zhenxiay/Downloads/postgres_data:/var/lib/postgresql/data:rw"
     ports:
       - "5432:5432"
     networks:
