@@ -8,6 +8,8 @@ setup(
         'pandas',
         'pyspark',
         'google',
+        'sqlalchemy',
+        'psycopg2',
         'numpy'
     ],
     author="zhenxiay",
