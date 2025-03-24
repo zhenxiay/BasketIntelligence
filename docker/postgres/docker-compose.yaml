@@ -7,7 +7,7 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB
     volumes:
-      - "C:/Users/zhenxiay/Downloads/postgres_data:/var/lib/postgresql/data:rw"
+      - postgres-db-volume:/var/lib/postgresql/data:rw
     ports:
       - "5432:5432"
     networks:
@@ -28,3 +28,6 @@ networks:
     driver: bridge
     driver_opts:
       com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
+
+volumes:
+  postgres-db-volume:
