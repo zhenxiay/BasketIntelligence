@@ -8,6 +8,8 @@ setup(
         'pandas',
         'pyspark',
         'google',
+        'google-cloud',
+        'google-cloud-bigquery',
         'sqlalchemy',
         'psycopg2',
         'numpy'
