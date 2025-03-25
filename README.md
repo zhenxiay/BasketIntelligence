@@ -19,7 +19,7 @@ dataset.read_team_adv_stats()
 
  ### Method to load data
  
- Currently the libaray offers API to load data to Google big query or to MS Fabric lakehouse:
+ Currently the libaray offers API to load data to postgresSQL, Google big query or to MS Fabric lakehouse:
  
  ##### Create a dataset that is to be loaded with pollowing parameters:
  
