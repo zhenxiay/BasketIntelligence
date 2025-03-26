@@ -24,6 +24,10 @@ expectation_FG_pct = gx.expectations.ExpectColumnValuesToBeBetween(
     column="FG_pct", min_value=0, max_value=1
 )
 
-for e in [expectation_game_count, expectation_FG_pct]:
+expectation_column_name_team = gx.expectations.ExpectColumnToExist(
+    column="Team"
+)
+
+for e in [expectation_game_count, expectation_FG_pct, expectation_column_name_team]:
     validation_result = batch.validate(e)
     print(validation_result)
