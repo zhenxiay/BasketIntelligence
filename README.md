@@ -51,6 +51,7 @@ source .venv/bin/activate
 #### Install dependencies
 ```bash
 uv add https://github.com/zhenxiay/BasketIntelligence.git
+```
 
 ## How to import and use library
 
