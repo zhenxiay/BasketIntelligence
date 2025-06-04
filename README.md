@@ -9,15 +9,6 @@ Data ingestion methods to to Google BigQuery, Fabric Lakehouse and PostgresSQL a
 ## 📋 Link to an example dashboard (looker studio):
 https://lookerstudio.google.com/reporting/10cd2c10-17f3-4e0e-aa9c-01fb6470516e/page/x05ZE
 
-## 🚀 Getting Started
-
-Clone the repository:
-
-```bash
-git clone https://github.com/zhenxiay/StockIntelligence.git
-cd StockIntelligence
-```
-
 ## 📦 Installation Options
 
 You can install this libary either with pip or uv. Choose the option that best suits your needs.
