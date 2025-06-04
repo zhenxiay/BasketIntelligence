@@ -37,8 +37,8 @@ pip install https://github.com/zhenxiay/BasketIntelligence.git
 ⚙️ To add this libary to an existing uv project, pls skip the first 2 steps
 
 ```bash
-uv init StockIntelligence
-cd StockIntelligence
+uv init BasketIntelligence
+cd BasketIntelligence
 ```
 
 #### Create virtual environment and activate it
