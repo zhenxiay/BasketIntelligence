@@ -1,7 +1,9 @@
 # 📋 BasketIntelligence
 
 Enables analysis and dashboarding of NBA statistic with data from basket_reference.com.
+
 Machine Learning functionality for decomposition of advanced statistics (BPM, PER etc.) will be provided.
+
 Data ingestion methods to to Google BigQuery, Fabric Lakehouse and PostgresSQL availiable.
 
 ## 📋 Link to an example dashboard (looker studio):
