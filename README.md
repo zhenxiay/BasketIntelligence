@@ -1,4 +1,4 @@
-# 📋 BasketIntelligence
+# 🏀 BasketIntelligence
 
 Enables analysis and dashboarding of NBA statistic with data from basket_reference.com.
 
