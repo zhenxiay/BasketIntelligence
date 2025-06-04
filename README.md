@@ -53,13 +53,10 @@ source .venv/bin/activate
 uv add https://github.com/zhenxiay/BasketIntelligence.git
 ```
 
-## How to import and use library
-
+## 🚀 Getting Started
 ```python
 from BasketIntelligence.create_season import CreateSeason
 ```
-## 🚀 Getting Started
-
 ### Add year as an argument to retrieve the data from a season
 
 ```python
