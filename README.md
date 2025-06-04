@@ -85,7 +85,7 @@ dataset.read_team_adv_stats()
  year, big query project id, dataset id and table id
 
  ```python
- dataset = LoadSeasonData("2025","keen-vial-420113","BasketIntelligence")
+ dataset = LoadSeasonData("2025","gcp-project-id","BasketIntelligence")
 ```
  
  #### Load to big query:
