@@ -4,7 +4,7 @@ version = "0.1.8"
 authors = [
     { name = "zhenxiay", email = "yu.zhenxiao.yz@gmail.com" },
 ]
-description = "A short description of your project." # You might want to add a more descriptive one
+description = "Enables analysis and dashboarding of NBA statistic with data from basket_reference.com." # You might want to add a more descriptive one
 readme = "README.md"
 requires-python = ">=3.8" # Assuming Python 3.8 or newer, adjust if needed
 dependencies = [
@@ -26,4 +26,4 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-where = {}
+find = {}
