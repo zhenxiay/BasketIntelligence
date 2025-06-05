@@ -43,12 +43,15 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82,E111 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Install uv
+      uses: astral-sh/setup-uv@v1 # Use the official setup-uv action
+    - name: Install project dependencies with uv
+      run: uv sync # Use uv sync to install dependencies from pyproject.toml
     - name: run pytest
       run: |
-        pip install lxml
-        pip install git+https://github.com/zhenxiay/BasketIntelligence.git@test
-        pytest tests/pyTest/
+        uv add pytest
+        uv run pytest tests/pyTest/
     - name: run data quality test (great expectations)
       run: |
-        pip install great_expectations
-        python3 tests/data_quality_test/run_great_expectations.py
+        uv add great_expectations
+        uv run tests/data_quality_test/run_great_expectations.py
