@@ -15,6 +15,7 @@ dependencies = [
     "google-cloud-bigquery",
     "sqlalchemy",
     "psycopg2",
+    "lxml",
     "numpy",
 ]
 
