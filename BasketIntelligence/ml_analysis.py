@@ -14,7 +14,7 @@ def k_means_team_shooting_clustering(year, n_clusters):
 
     pred = k_means.predict(X)
 
-    df_output['Cluster'] = pred
+    df_output['kMeans'] = pred
 
     return df_output
 
