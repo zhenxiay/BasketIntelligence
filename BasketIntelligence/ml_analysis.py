@@ -23,7 +23,7 @@ def k_means_player_clustering(year, n_clusters):
     dataset = CreateSeason(year).read_adv_stats().drop(columns=['Awards'])
         
     label_cols = ['Rk','Player','Pos','Age','Team']
-    k_means_cols = ['TS%','3PAr','FTr', 'ORB%', 'DRB%', 'AST%', 'STL%', 'BLK%', 'TOV%', 'USG%']
+    k_means_cols = ['TS_Rate','3PAr','FTr', 'ORB_Rate', 'DRB_Rate', 'AST_Rate', 'STL_Rate', 'BLK_Rate', 'TOV_Rate', 'USG%']
     output_cols = ['Rk','Player','Pos','Age','Team', 'kMeans']
   
     X = dataset[k_means_cols]
