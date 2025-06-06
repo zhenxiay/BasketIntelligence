@@ -12,6 +12,7 @@ setup(
         'google-cloud-bigquery',
         'sqlalchemy',
         'psycopg2',
+        "scikit-learn",
         'numpy'
     ],
     author="zhenxiay",

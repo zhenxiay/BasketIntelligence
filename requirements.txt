@@ -6,3 +6,4 @@ google-cloud
 google-cloud-bigquery
 sqlalchemy
 psycopg2
+scikit-learn
