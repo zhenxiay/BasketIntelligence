@@ -16,6 +16,7 @@ dependencies = [
     "sqlalchemy",
     "psycopg2",
     "lxml",
+    "scikit-learn",
     "numpy",
 ]
 
