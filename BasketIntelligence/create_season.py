@@ -226,7 +226,7 @@ class CreateSeason():
             column_mapping = {'WS/48': 'WS_48',
                               'TS%': 'TS',
                               'ORB%': 'ORB_rate',
-                              'DRB%': 'ORD_rate',
+                              'DRB%': 'DRB_rate',
                               'TRB%': 'TRB_rate',
                               'AST%': 'AST_rate',
                               'STL%': 'STL_rate',
