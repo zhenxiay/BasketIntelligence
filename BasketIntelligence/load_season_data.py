@@ -3,6 +3,7 @@ from pyspark.sql import SparkSession
 from google.cloud import bigquery
 from sqlalchemy import create_engine
 from BasketIntelligence.create_season import CreateSeason
+from BasketIntelligence.ml_analysis import k_means_team_shooting_clustering, k_means_player_clustering
 
 class LoadSeasonData(CreateSeason):
     def __init__(self, year, project, dataset_name):
@@ -79,6 +80,14 @@ class LoadSeasonData(CreateSeason):
         dataset = CreateSeason(self.year).read_team_shooting()
         self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
 
+    def load_kmeans_team_shooting_to_postgres(self,table_name) -> None:
+        dataset = k_means_team_shooting_clustering(self.year)
+        self.data_ingestion_postgres(dataset,table_name)
+        
+    def load_kmeans_player_to_postgres(self,table_name) -> None:
+        dataset = k_means_player_clustering(self.year)
+        self.data_ingestion_postgres(dataset,table_name)
+        
 ############ Methods for loading data into bigquery ###############################
 
     def load_per_game_to_big_query(self,table_name) -> None:
@@ -95,6 +104,14 @@ class LoadSeasonData(CreateSeason):
         
     def load_team_shooting_to_big_query(self,table_name) -> None:
         dataset = CreateSeason(self.year).read_team_shooting()
+        self.data_ingestion_big_query(dataset,table_name)
+
+    def load_kmeans_team_shooting_to_big_query(self,table_name) -> None:
+        dataset = k_means_team_shooting_clustering(self.year)
+        self.data_ingestion_big_query(dataset,table_name)
+        
+    def load_kmeans_player_to_big_query(self,table_name) -> None:
+        dataset = k_means_player_clustering(self.year)
         self.data_ingestion_big_query(dataset,table_name)
 
 ############ Methods for loading data into fabric lakehose ############################
@@ -114,3 +131,11 @@ class LoadSeasonData(CreateSeason):
     def load_team_shooting_to_lakehouse(self) -> None:
         dataset = CreateSeason(self.year).read_team_shooting()
         self.data_ingestion_lakehouse(dataset,'team_shooting')
+
+    def load_kmeans_team_shooting_to_lakehouse(self,table_name) -> None:
+        dataset = k_means_team_shooting_clustering(self.year)
+        self.data_ingestion_lakehouse(dataset,table_name)
+        
+    def load_kmeans_player_to_lakehouse(self,table_name) -> None:
+        dataset = k_means_player_clustering(self.year)
+        self.data_ingestion_lakehouse(dataset,table_name)
