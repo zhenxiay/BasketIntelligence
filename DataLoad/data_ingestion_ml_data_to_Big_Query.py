@@ -20,7 +20,7 @@ parser.add_argument('table_name',
                    help ='Google Big Query table name to which the data will be ingested to.')
 
 parser.add_argument('n_cluster',
-                   type = int,
+                   type = str,
                    help ='Number of kmeans clusters that is to be applied.')
 
 args = parser.parse_args()
