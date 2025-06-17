@@ -1,4 +1,4 @@
-from BasketIntelligence.load_season import LoadSeasonData
+from BasketIntelligence.load_season_data import LoadSeasonData
 
 def main():
 
