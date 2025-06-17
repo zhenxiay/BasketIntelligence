@@ -3,6 +3,8 @@
 name: data_ingestion_to_big_query
 
 on:
+  push:
+    branches: feature_ml_analysis
   # workflow can only be triggered manually
   workflow_dispatch:
     # Inputs the workflow accepts.
