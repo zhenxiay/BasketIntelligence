@@ -80,12 +80,12 @@ class LoadSeasonData(CreateSeason):
         dataset = CreateSeason(self.year).read_team_shooting()
         self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
 
-    def load_kmeans_team_shooting_to_postgres(self,table_name) -> None:
-        dataset = k_means_team_shooting_clustering(self.year)
+    def load_kmeans_team_shooting_to_postgres(self,table_name,n_cluster) -> None:
+        dataset = k_means_team_shooting_clustering(self.year,n_cluster)
         self.data_ingestion_postgres(dataset,table_name)
         
-    def load_kmeans_player_to_postgres(self,table_name) -> None:
-        dataset = k_means_player_clustering(self.year)
+    def load_kmeans_player_to_postgres(self,table_name,n_cluster) -> None:
+        dataset = k_means_player_clustering(self.year,n_cluster)
         self.data_ingestion_postgres(dataset,table_name)
         
 ############ Methods for loading data into bigquery ###############################
@@ -106,12 +106,12 @@ class LoadSeasonData(CreateSeason):
         dataset = CreateSeason(self.year).read_team_shooting()
         self.data_ingestion_big_query(dataset,table_name)
 
-    def load_kmeans_team_shooting_to_big_query(self,table_name) -> None:
-        dataset = k_means_team_shooting_clustering(self.year)
+    def load_kmeans_team_shooting_to_big_query(self,table_name,n_cluster) -> None:
+        dataset = k_means_team_shooting_clustering(self.year,n_cluster)
         self.data_ingestion_big_query(dataset,table_name)
         
-    def load_kmeans_player_to_big_query(self,table_name) -> None:
-        dataset = k_means_player_clustering(self.year)
+    def load_kmeans_player_to_big_query(self,table_name,n_cluster) -> None:
+        dataset = k_means_player_clustering(self.year,n_cluster)
         self.data_ingestion_big_query(dataset,table_name)
 
 ############ Methods for loading data into fabric lakehose ############################
@@ -132,10 +132,10 @@ class LoadSeasonData(CreateSeason):
         dataset = CreateSeason(self.year).read_team_shooting()
         self.data_ingestion_lakehouse(dataset,'team_shooting')
 
-    def load_kmeans_team_shooting_to_lakehouse(self,table_name) -> None:
-        dataset = k_means_team_shooting_clustering(self.year)
+    def load_kmeans_team_shooting_to_lakehouse(self,table_name,n_cluster) -> None:
+        dataset = k_means_team_shooting_clustering(self.year,n_cluster)
         self.data_ingestion_lakehouse(dataset,table_name)
         
-    def load_kmeans_player_to_lakehouse(self,table_name) -> None:
-        dataset = k_means_player_clustering(self.year)
+    def load_kmeans_player_to_lakehouse(self,table_name,n_cluster) -> None:
+        dataset = k_means_player_clustering(self.year,n_cluster)
         self.data_ingestion_lakehouse(dataset,table_name)
