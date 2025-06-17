@@ -1,0 +1,73 @@
+
+# This workflow triggers a full load of selected stock data into a Google Big Query project
+name: data_ingestion_to_big_query
+
+on:
+  push:
+    branches: feature_ml_analysis
+  # workflow can only be triggered manually
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      project_name:
+        description: 'GCP project name to which the data is ingested '
+        default: 'GCP-Project'
+        required: true
+        type: string
+        
+      year:
+        description: 'The year of the NBA season to which the data is read'
+        default: '2025'
+        required: true
+        type: string
+
+      dataset:
+        description: 'The dataset name of the Google Big Query project.'
+        default: 'BaseketballIntelligence'
+        required: true
+        type: string
+
+      table_name:
+        description: 'The table name of the Google Big Query dataset'
+        default: 'kmeans_team_shooting'
+        required: true
+        type: string
+
+      n_cluster:
+        description: 'The number of the clusters for the kmeans analysis'
+        default: '5'
+        required: true
+        type: string        
+
+jobs:
+  data_ingestion:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: checkout branch
+      uses: actions/checkout@v4
+      
+    - name: Install uv
+      uses: astral-sh/setup-uv@v1 # Use the official setup-uv action
+      
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+        
+    - name: Install project dependencies with uv
+      run: uv sync # Use uv sync to install dependencies from pyproject.toml
+        
+    - name: GCP authentication
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.BIGQUERY_TOKEN }}'
+
+    - name: Check input values
+      run: |
+        echo '${{ inputs.year }}' '${{ inputs.project_name }}' '${{ inputs.dataset }}' '${{ inputs.table_name }}' '${{ inputs.n_cluster }}'
+        
+    - name: Run python script - data ingestion to BQ
+      run: |
+        uv run DataLoad/data_ingestion_ml_data_to_Big_Query.py '${{ inputs.year }}' '${{ inputs.project_name }}' '${{ inputs.dataset }}' '${{ inputs.table_name }}' '${{ inputs.n_cluster }}'
