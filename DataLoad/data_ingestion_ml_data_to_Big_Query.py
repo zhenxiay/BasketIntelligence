@@ -4,23 +4,23 @@ import argparse
 parser = argparse.ArgumentParser(description ='Define args for GitHub actions')
 
 parser.add_argument('year',
-                    type = string,
+                    type = str,
                     help ='Year of the NBA season.')
 
 parser.add_argument('GCP_Name',
-                   type = string,
+                   type = str,
                    help ='Google cloud project name.')
 
 parser.add_argument('dataset',
-                   type = string,
+                   type = str,
                    help ='Google Big Query dataset name.')
 
 parser.add_argument('table_name',
-                   type = string,
+                   type = str,
                    help ='Google Big Query table name to which the data will be ingested to.')
 
 parser.add_argument('n_cluster',
-                   type = integer,
+                   type = int,
                    help ='Number of kmeans clusters that is to be applied.')
 
 args = parser.parse_args()
