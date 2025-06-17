@@ -31,8 +31,10 @@ def main():
                              args.GCP_Name,
                              args.dataset)
 
-    dataset.load_kmeans_team_shooting_to_big_query(table_name=args.table_name,
-                                                   n_cluster=args.n_cluster)
+    dataset.load_kmeans_team_shooting_to_big_query(
+                                                   table_name=args.table_name,
+                                                   n_cluster=int(args.n_cluster)
+                                                  )
 
 if __name__ == "__main__":
     main()
