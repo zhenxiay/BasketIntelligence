@@ -3,8 +3,6 @@
 name: data_ingestion_to_big_query
 
 on:
-  push:
-    branches: feature_ml_analysis
   # workflow can only be triggered manually
   workflow_dispatch:
     # Inputs the workflow accepts.
@@ -23,7 +21,7 @@ on:
 
       dataset:
         description: 'The dataset name of the Google Big Query project.'
-        default: 'BaseketballIntelligence'
+        default: 'BasketIntelligence'
         required: true
         type: string
 
