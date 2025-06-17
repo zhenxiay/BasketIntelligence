@@ -73,6 +73,8 @@ dataset.read_team_adv_stats()
  year, big query project id, dataset id and table id
 
  ```python
+ from BasketIntelligence.load_season_data import LoadSeasonData
+
  dataset = LoadSeasonData("2025","gcp-project-id","BasketIntelligence")
 ```
  
