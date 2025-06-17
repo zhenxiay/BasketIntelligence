@@ -11,9 +11,31 @@ on:
         description: 'GCP project name to which the data is ingested '
         default: 'GCP-Project'
         required: true
+        type: string,
+        
+      year:
+        description: 'The year of the NBA season to which the data is read'
+        default: '2025'
+        required: true
         type: string
-  push:
-    branches: "feature_ml_analysis"
+
+      dataset:
+        description: 'The dataset name of the Google Big Query project.'
+        default: 'BaseketballIntelligence'
+        required: true
+        type: string
+
+      table_name:
+        description: 'The table name of the Google Big Query dataset'
+        default: 'kmeans_team_shooting'
+        required: true
+        type: string
+
+      n_cluster:
+        description: 'The number of the clusters for the kmeans analysis'
+        default: 5
+        required: true
+        type: number        
 
 jobs:
   data_ingestion:
@@ -42,4 +64,4 @@ jobs:
         
     - name: Run python script - data ingestion to BQ
       run: |
-        uv run DataLoad/data_ingestion_ml_data_to_Big_Query.py
+        uv run DataLoad/data_ingestion_ml_data_to_Big_Query.py ${{ inputs.year }} ${{ inputs.project_name }} ${{ inputs.dataset }} ${{ inputs.table_name }} ${{ inputs.n_cluster }}
