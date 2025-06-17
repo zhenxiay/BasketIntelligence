@@ -6,7 +6,8 @@ def main():
                          "keen-vial-420113",
                          "BasketIntelligence")
 
-    dataset.load_kmeans_team_shooting_to_big_query("kmeans_team_shooting")
+    dataset.load_kmeans_team_shooting_to_big_query(table_name="kmeans_team_shooting",
+                                                   n_cluster=5)
 
 if __name__ == "__main__":
     main()
