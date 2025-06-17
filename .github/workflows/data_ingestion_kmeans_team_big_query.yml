@@ -13,7 +13,7 @@ on:
         description: 'GCP project name to which the data is ingested '
         default: 'GCP-Project'
         required: true
-        type: string,
+        type: string
         
       year:
         description: 'The year of the NBA season to which the data is read'
@@ -35,9 +35,9 @@ on:
 
       n_cluster:
         description: 'The number of the clusters for the kmeans analysis'
-        default: 5
+        default: '5'
         required: true
-        type: number        
+        type: string        
 
 jobs:
   data_ingestion:
@@ -63,7 +63,11 @@ jobs:
       uses: 'google-github-actions/auth@v2'
       with:
         credentials_json: '${{ secrets.BIGQUERY_TOKEN }}'
+
+    - name: Check input values
+      run: |
+        echo ${{ inputs.year }} ${{ inputs.project_name }} ${{ inputs.dataset }} ${{ inputs.table_name }} ${{ inputs.n_cluster }}
         
     - name: Run python script - data ingestion to BQ
       run: |
-        uv run DataLoad/data_ingestion_ml_data_to_Big_Query.py ${{ inputs.year }} ${{ inputs.project_name }} ${{ inputs.dataset }} ${{ inputs.table_name }} ${{ inputs.n_cluster }}
+        uv run DataLoad/data_ingestion_ml_data_to_Big_Query.py year ${{ inputs.year }} GCP_Name ${{ inputs.project_name }} dataset ${{ inputs.dataset }} table_name ${{ inputs.table_name }} n_cluster ${{ inputs.n_cluster }}
