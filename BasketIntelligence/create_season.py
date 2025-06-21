@@ -1,5 +1,6 @@
 
 import pandas as pd
+from BasketIntelligence.utils.logger import get_logger
 
 class CreateSeason():
 
@@ -8,6 +9,7 @@ class CreateSeason():
         self.url_per_game = f'https://www.basketball-reference.com/leagues/NBA_{self.year}_per_game.html'
         self.url_adv_stats = f'https://www.basketball-reference.com/leagues/NBA_{self.year}_advanced.html'
         self.url_team_stats = f'https://www.basketball-reference.com/leagues/NBA_{self.year}.html'
+        self.logger = get_logger()
     
     @staticmethod
     # Standard function which is going to be used by the read functions below for data cleaning
@@ -65,6 +67,8 @@ class CreateSeason():
                 .pipe(self.add_season_number, season = self.year)
                 )
 
+        logger.INFO(f"Dataframe created with {len(df_output)} rows...")
+        
         return df_output
     
     def read_team_adv_stats(self):
@@ -119,6 +123,8 @@ class CreateSeason():
                    .pipe(self.add_season_number, season = self.year)
                    )
 
+        logger.INFO(f"Dataframe created with {len(df_output)} rows...")
+        
         return df_output
     
     def read_stats_per_game(self):
@@ -183,6 +189,8 @@ class CreateSeason():
                    .pipe(self.add_season_number, season = self.year)
                    )
 
+        logger.INFO(f"Dataframe created with {len(df_output)} rows...")
+        
         return df_output
 
     def read_adv_stats(self):
@@ -256,5 +264,7 @@ class CreateSeason():
                    .pipe(filter_rows)
                    .pipe(self.add_season_number, season = self.year)
                    )
+                
+        logger.INFO(f"Dataframe created with {len(df_output)} rows...")
 
         return df_output
