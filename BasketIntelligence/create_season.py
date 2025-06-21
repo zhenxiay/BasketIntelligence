@@ -67,7 +67,7 @@ class CreateSeason():
                 .pipe(self.add_season_number, season = self.year)
                 )
 
-        logger.INFO(f"Dataframe created with {len(df_output)} rows...")
+        self.logger.info(f"Dataframe created with {len(df_output)} rows...")
         
         return df_output
     
@@ -123,7 +123,7 @@ class CreateSeason():
                    .pipe(self.add_season_number, season = self.year)
                    )
 
-        logger.INFO(f"Dataframe created with {len(df_output)} rows...")
+        self.logger.info(f"Dataframe created with {len(df_output)} rows...")
         
         return df_output
     
@@ -189,7 +189,7 @@ class CreateSeason():
                    .pipe(self.add_season_number, season = self.year)
                    )
 
-        logger.INFO(f"Dataframe created with {len(df_output)} rows...")
+        self.logger.info(f"Dataframe created with {len(df_output)} rows...")
         
         return df_output
 
@@ -265,6 +265,6 @@ class CreateSeason():
                    .pipe(self.add_season_number, season = self.year)
                    )
                 
-        logger.INFO(f"Dataframe created with {len(df_output)} rows...")
+        self.logger.info(f"Dataframe created with {len(df_output)} rows...")
 
         return df_output

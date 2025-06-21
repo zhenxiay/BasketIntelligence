@@ -4,12 +4,14 @@ from google.cloud import bigquery
 from sqlalchemy import create_engine
 from BasketIntelligence.create_season import CreateSeason
 from BasketIntelligence.ml_analysis import k_means_team_shooting_clustering, k_means_player_clustering
+from BasketIntelligence.utils.logger import get_logger
 
 class LoadSeasonData(CreateSeason):
     def __init__(self, year, project, dataset_name):
         super().__init__(year=year)
         self.project = project
         self.dataset_name = dataset_name
+        self.logger = get_logger()
 
 ############ database setups for postgres SQL ################################
 
@@ -26,7 +28,7 @@ class LoadSeasonData(CreateSeason):
                        con=engine,
                        if_exists="replace")
 
-        print(f'{table_name} load to postgres database {host}/{db} successfully!')
+        self.logger.info(f'{table_name} load to postgres database {host}/{db} successfully!')
 
 ############ database setups for MS fabric lakehouse ######################
 
@@ -43,10 +45,10 @@ class LoadSeasonData(CreateSeason):
         dataset_spark = spark.createDataFrame(dataset)
         
         spark.sql(f"DROP TABLE IF EXISTS basketball_reference_{name}_{self.year}")
-        print(f"Dropped table basketball_reference_{name}_{self.year} in the lakehouse...")
+        self.logger.info(f"Dropped table basketball_reference_{name}_{self.year} in the lakehouse...")
 
         dataset_spark.write.saveAsTable(f"basketball_reference_{name}_{self.year}")
-        print(f'load table basketball_reference_{name}_{self.year} successfully!')
+        self.logger.info(f'load table basketball_reference_{name}_{self.year} successfully!')
 
 ############ database setups for big query ###############
 
@@ -60,7 +62,7 @@ class LoadSeasonData(CreateSeason):
         table_id = f'{self.project}.{self.dataset_name}.{table_name}'
         client, job_config = self.create_big_query_client()
         client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
-        print(f'Data load to big query {table_id} successfully!')
+        self.logger.info(f'Data load to big query {table_id} successfully!')
 
 ############ Methods for loading data into postgres SQL ##########################
 
