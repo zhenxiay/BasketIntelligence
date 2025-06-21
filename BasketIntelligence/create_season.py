@@ -67,6 +67,8 @@ class CreateSeason():
                 .pipe(self.add_season_number, season = self.year)
                 )
 
+        logger.INFO(f"Dataframe created with {len(df_output)} rows...")
+        
         return df_output
     
     def read_team_adv_stats(self):
@@ -121,6 +123,8 @@ class CreateSeason():
                    .pipe(self.add_season_number, season = self.year)
                    )
 
+        logger.INFO(f"Dataframe created with {len(df_output)} rows...")
+        
         return df_output
     
     def read_stats_per_game(self):
@@ -185,6 +189,8 @@ class CreateSeason():
                    .pipe(self.add_season_number, season = self.year)
                    )
 
+        logger.INFO(f"Dataframe created with {len(df_output)} rows...")
+        
         return df_output
 
     def read_adv_stats(self):
