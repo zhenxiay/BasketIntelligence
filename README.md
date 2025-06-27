@@ -18,7 +18,7 @@ You can install this libary either with pip or uv. Choose the option that best s
 Install using pip install:
 
 ```bash
-pip install https://github.com/zhenxiay/BasketIntelligence.git
+pip install git+https://github.com/zhenxiay/BasketIntelligence.git
 ```
 
 ### Option 2: Install with uv
