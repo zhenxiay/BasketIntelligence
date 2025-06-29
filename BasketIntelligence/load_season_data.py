@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from BasketIntelligence.create_season import CreateSeason
 from BasketIntelligence.ml_analysis import k_means_team_shooting_clustering, k_means_player_clustering
 from BasketIntelligence.utils.logger import get_logger
+from BaseketIntelligence.utils.connect_sqlite import connect_sqlite
 
 class LoadSeasonData(CreateSeason):
     def __init__(self, year, project, dataset_name):
@@ -20,7 +21,7 @@ class LoadSeasonData(CreateSeason):
         engine = create_engine(f'postgresql://{user}:{pwd}@{host}:5432/{db}')
         return engine
     
-    def data_ingestion_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+    def data_ingestion_postgres(self,table_name,user,pwd,host,db) -> None:
         engine = self.connect_postgres(user, pwd, host, db)
         engine.connect()
 
@@ -29,6 +30,18 @@ class LoadSeasonData(CreateSeason):
                        if_exists="replace")
 
         self.logger.info(f'{table_name} load to postgres database {host}/{db} successfully!')
+        
+############ database setups for sqlite3 ##################################
+
+    def data_ingestion_sqlite(self,table_name,db_path,db_name) -> None:
+        engine = connect_sqlite(db_path,db_name):
+        
+        dataset.to_sql(table_name,
+                       con=engine,
+                       if_exists="replace")
+
+        self.logger.info(f'{table_name} load to sqlite database {db_path}/{db_name} successfully!')
+        self.logger.info(f'Rows count: {len(dataset)}')
 
 ############ database setups for MS fabric lakehouse ######################
 
@@ -66,29 +79,55 @@ class LoadSeasonData(CreateSeason):
 
 ############ Methods for loading data into postgres SQL ##########################
 
-    def load_per_game_to_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+    def load_per_game_to_postgres(self,table_name,user,pwd,host,db) -> None:
         dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
-        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+        self.data_ingestion_postgres(table_name,user,pwd,host,db)
 
-    def load_adv_stats_to_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+    def load_adv_stats_to_postgres(self,table_name,user,pwd,host,db) -> None:
         dataset = CreateSeason(self.year).read_adv_stats().drop(columns=['Awards'])
-        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+        self.data_ingestion_postgres(table_name,user,pwd,host,db)
 
-    def load_team_adv_stats_to_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+    def load_team_adv_stats_to_postgres(self,table_name,user,pwd,host,db) -> None:
         dataset = CreateSeason(self.year).read_team_adv_stats()
-        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+        self.data_ingestion_postgres(table_name,user,pwd,host,db)
 
-    def load_team_shooting_to_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+    def load_team_shooting_to_postgres(self,table_name,user,pwd,host,db) -> None:
         dataset = CreateSeason(self.year).read_team_shooting()
-        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+        self.data_ingestion_postgres(table_name,user,pwd,host,db)
 
-    def load_kmeans_team_shooting_to_postgres(self,table_name,n_cluster) -> None:
+    def load_kmeans_team_shooting_to_postgres(self,table_name,n_cluster,user,pwd,host,db) -> None:
         dataset = k_means_team_shooting_clustering(self.year,n_cluster)
-        self.data_ingestion_postgres(dataset,table_name)
+        self.data_ingestion_postgres(table_name,user,pwd,host,db)
         
     def load_kmeans_player_to_postgres(self,table_name,n_cluster) -> None:
         dataset = k_means_player_clustering(self.year,n_cluster)
-        self.data_ingestion_postgres(dataset,table_name)
+        self.data_ingestion_postgres(table_name,user,pwd,host,db)
+        
+############ Methods for loading data into sqlite database ##########################
+
+    def load_per_game_to_sqlite(self,table_name,db_path,db_name) -> None:
+        dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
+        self.data_ingestion_sqlite(table_name,db_path,db_name)
+
+    def load_adv_stats_to_sqlite(self,table_name,db_path,db_name) -> None:
+        dataset = CreateSeason(self.year).read_adv_stats().drop(columns=['Awards'])
+        self.data_ingestion_sqlite(table_name,db_path,db_name)
+
+    def load_team_adv_stats_to_sqlite(self,table_name,db_path,db_name) -> None:
+        dataset = CreateSeason(self.year).read_team_adv_stats()
+        self.data_ingestion_sqlite(table_name,db_path,db_name)
+
+    def load_team_shooting_to_sqlite(self,table_name,db_path,db_name) -> None:
+        dataset = CreateSeason(self.year).read_team_shooting()
+        self.data_ingestion_sqlite(table_name,db_path,db_name)
+
+    def load_kmeans_team_shooting_to_sqlite(self,table_name,n_cluster, db_path,db_name) -> None:
+        dataset = k_means_team_shooting_clustering(self.year,n_cluster)
+        self.data_ingestion_sqlite(table_name,db_path,db_name)
+        
+    def load_kmeans_player_to_sqlite(self,table_name,n_cluster,db_path,db_name) -> None:
+        dataset = k_means_player_clustering(self.year,n_cluster)
+        self.data_ingestion_sqlite(table_name,db_path,db_name)
         
 ############ Methods for loading data into bigquery ###############################
 
