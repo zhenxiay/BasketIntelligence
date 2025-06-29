@@ -88,5 +88,5 @@ dataset.read_team_adv_stats()
  #### Load to MS fabric lakehouse:
  
  ```python
- datasetload_adv_stats_to_lakehouse()
+ dataset.load_adv_stats_to_lakehouse()
  ```
