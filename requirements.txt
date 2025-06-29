@@ -6,4 +6,5 @@ google-cloud
 google-cloud-bigquery
 sqlalchemy
 psycopg2
+sqlite3
 scikit-learn
