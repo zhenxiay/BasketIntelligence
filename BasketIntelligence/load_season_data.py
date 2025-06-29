@@ -20,7 +20,7 @@ class LoadSeasonData(CreateSeason):
         engine = create_engine(f'postgresql://{user}:{pwd}@{host}:5432/{db}')
         return engine
     
-    def data_ingestion_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+    def data_ingestion_postgres(self,table_name,user,pwd,host,db) -> None:
         engine = self.connect_postgres(user, pwd, host, db)
         engine.connect()
 
@@ -66,29 +66,29 @@ class LoadSeasonData(CreateSeason):
 
 ############ Methods for loading data into postgres SQL ##########################
 
-    def load_per_game_to_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+    def load_per_game_to_postgres(self,table_name,user,pwd,host,db) -> None:
         dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
         self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
 
-    def load_adv_stats_to_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+    def load_adv_stats_to_postgres(self,table_name,user,pwd,host,db) -> None:
         dataset = CreateSeason(self.year).read_adv_stats().drop(columns=['Awards'])
         self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
 
-    def load_team_adv_stats_to_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+    def load_team_adv_stats_to_postgres(self,table_name,user,pwd,host,db) -> None:
         dataset = CreateSeason(self.year).read_team_adv_stats()
         self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
 
-    def load_team_shooting_to_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
+    def load_team_shooting_to_postgres(self,table_name,user,pwd,host,db) -> None:
         dataset = CreateSeason(self.year).read_team_shooting()
         self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
 
-    def load_kmeans_team_shooting_to_postgres(self,table_name,n_cluster) -> None:
+    def load_kmeans_team_shooting_to_postgres(self,table_name,n_cluster,user,pwd,host,db) -> None:
         dataset = k_means_team_shooting_clustering(self.year,n_cluster)
-        self.data_ingestion_postgres(dataset,table_name)
+        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
         
     def load_kmeans_player_to_postgres(self,table_name,n_cluster) -> None:
         dataset = k_means_player_clustering(self.year,n_cluster)
-        self.data_ingestion_postgres(dataset,table_name)
+        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
         
 ############ Methods for loading data into bigquery ###############################
 
