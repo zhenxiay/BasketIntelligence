@@ -11,6 +11,7 @@ setup(
         'google-cloud',
         'google-cloud-bigquery',
         'sqlalchemy',
+        'sqlite3',
         'psycopg2',
         "scikit-learn",
         'numpy'
