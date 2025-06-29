@@ -33,8 +33,8 @@ class LoadSeasonData(CreateSeason):
         
 ############ database setups for sqlite3 ##################################
 
-    def data_ingestion_sqlite(self,table_name,db_path,db_name):
-        conn = connect_sqlite(db_path,db_name):
+    def data_ingestion_sqlite(self,table_name,db_path,db_name) -> None:
+        engine = connect_sqlite(db_path,db_name):
         
         dataset.to_sql(table_name,
                        con=engine,
