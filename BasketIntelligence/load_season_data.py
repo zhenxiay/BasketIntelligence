@@ -30,6 +30,18 @@ class LoadSeasonData(CreateSeason):
                        if_exists="replace")
 
         self.logger.info(f'{table_name} load to postgres database {host}/{db} successfully!')
+        
+############ database setups for sqlite3 ##################################
+
+    def data_ingestion_sqlite(self,table_name,db_path,db_name):
+        conn = connect_sqlite(db_path,db_name):
+        
+        dataset.to_sql(table_name,
+                       con=engine,
+                       if_exists="replace")
+
+        self.logger.info(f'{table_name} load to sqlite database {db_path}/{db_name} successfully!')
+        self.logger.info(f'Rows count: {len(dataset)}')
 
 ############ database setups for MS fabric lakehouse ######################
 
@@ -69,27 +81,53 @@ class LoadSeasonData(CreateSeason):
 
     def load_per_game_to_postgres(self,table_name,user,pwd,host,db) -> None:
         dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
-        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+        self.data_ingestion_postgres(table_name,user,pwd,host,db)
 
     def load_adv_stats_to_postgres(self,table_name,user,pwd,host,db) -> None:
         dataset = CreateSeason(self.year).read_adv_stats().drop(columns=['Awards'])
-        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+        self.data_ingestion_postgres(table_name,user,pwd,host,db)
 
     def load_team_adv_stats_to_postgres(self,table_name,user,pwd,host,db) -> None:
         dataset = CreateSeason(self.year).read_team_adv_stats()
-        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+        self.data_ingestion_postgres(table_name,user,pwd,host,db)
 
     def load_team_shooting_to_postgres(self,table_name,user,pwd,host,db) -> None:
         dataset = CreateSeason(self.year).read_team_shooting()
-        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+        self.data_ingestion_postgres(table_name,user,pwd,host,db)
 
     def load_kmeans_team_shooting_to_postgres(self,table_name,n_cluster,user,pwd,host,db) -> None:
         dataset = k_means_team_shooting_clustering(self.year,n_cluster)
-        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+        self.data_ingestion_postgres(table_name,user,pwd,host,db)
         
     def load_kmeans_player_to_postgres(self,table_name,n_cluster) -> None:
         dataset = k_means_player_clustering(self.year,n_cluster)
-        self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
+        self.data_ingestion_postgres(table_name,user,pwd,host,db)
+        
+############ Methods for loading data into sqlite database ##########################
+
+    def load_per_game_to_sqlite(self,table_name,db_path,db_name) -> None:
+        dataset = CreateSeason(self.year).read_stats_per_game().drop(columns=['Awards'])
+        self.data_ingestion_sqlite(table_name,db_path,db_name)
+
+    def load_adv_stats_to_sqlite(self,table_name,db_path,db_name) -> None:
+        dataset = CreateSeason(self.year).read_adv_stats().drop(columns=['Awards'])
+        self.data_ingestion_sqlite(table_name,db_path,db_name)
+
+    def load_team_adv_stats_to_sqlite(self,table_name,db_path,db_name) -> None:
+        dataset = CreateSeason(self.year).read_team_adv_stats()
+        self.data_ingestion_sqlite(table_name,db_path,db_name)
+
+    def load_team_shooting_to_sqlite(self,table_name,db_path,db_name) -> None:
+        dataset = CreateSeason(self.year).read_team_shooting()
+        self.data_ingestion_sqlite(table_name,db_path,db_name)
+
+    def load_kmeans_team_shooting_to_sqlite(self,table_name,n_cluster, db_path,db_name) -> None:
+        dataset = k_means_team_shooting_clustering(self.year,n_cluster)
+        self.data_ingestion_sqlite(table_name,db_path,db_name)
+        
+    def load_kmeans_player_to_sqlite(self,table_name,n_cluster,db_path,db_name) -> None:
+        dataset = k_means_player_clustering(self.year,n_cluster)
+        self.data_ingestion_sqlite(table_name,db_path,db_name)
         
 ############ Methods for loading data into bigquery ###############################
 
