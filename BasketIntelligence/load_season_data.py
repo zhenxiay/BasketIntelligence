@@ -34,13 +34,13 @@ class LoadSeasonData(CreateSeason):
 ############ database setups for sqlite3 ##################################
 
     def data_ingestion_sqlite(self,dataset,table_name,db_path,db_name) -> None:
-        engine = connect_sqlite(db_path,db_name):
+        engine = connect_sqlite(db_path,db_name)
         
         dataset.to_sql(table_name,
                        con=engine,
                        if_exists="replace")
 
-        self.logger.info(f'{table_name} load to sqlite database {db_path}/{db_name} successfully!')
+        self.logger.info(f'{table_name} loaded to sqlite database {db_path}/{db_name} successfully!')
         self.logger.info(f'Rows count: {len(dataset)}')
 
 ############ database setups for MS fabric lakehouse ######################
