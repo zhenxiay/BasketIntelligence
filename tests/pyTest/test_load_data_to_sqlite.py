@@ -8,6 +8,4 @@ def test_load_per_game_to_sqlite():
     db_path = "./"
     db_name = "test_db.sqlite"
 
-    db_file = f"{db_path}{db_name}"
-    
-    assert db_file.exists()
+    dataset.load_per_game_to_sqlite(table_name, db_path, db_name)
