@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from BasketIntelligence.create_season import CreateSeason
 from BasketIntelligence.ml_analysis import k_means_team_shooting_clustering, k_means_player_clustering
 from BasketIntelligence.utils.logger import get_logger
-from BaseketIntelligence.utils.connect_sqlite import connect_sqlite
+from BasketIntelligence.utils.connect_sqlite import connect_sqlite
 
 class LoadSeasonData(CreateSeason):
     def __init__(self, year, project, dataset_name):
