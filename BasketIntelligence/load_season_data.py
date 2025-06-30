@@ -99,7 +99,7 @@ class LoadSeasonData(CreateSeason):
         dataset = k_means_team_shooting_clustering(self.year,n_cluster)
         self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
         
-    def load_kmeans_player_to_postgres(self,table_name,n_cluster) -> None:
+    def load_kmeans_player_to_postgres(self,table_name,n_cluster,user,pwd,host,db) -> None:
         dataset = k_means_player_clustering(self.year,n_cluster)
         self.data_ingestion_postgres(dataset,table_name,user,pwd,host,db)
         
