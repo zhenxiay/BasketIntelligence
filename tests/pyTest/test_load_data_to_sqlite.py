@@ -8,4 +8,4 @@ def test_load_per_game_to_sqlite():
     db_path = "./"
     db_name = "test_db"
     
-    assert dataset.load_per_game_to_sqlite(table_name, db_path, db_name) is true
+    assert dataset.load_per_game_to_sqlite(table_name, db_path, db_name) is True
