@@ -46,7 +46,7 @@ jobs:
 
     - name: Lint with pylint
       run: |
-        uv run pylint . --fail-under 9.7 --msg-template='{msg_id}:{line:3d},{column}: {obj}: {msg}'
+        uv run pylint BasketIntelligence/ --fail-under 9.7 --msg-template='{msg_id}:{line:3d},{column}: {obj}: {msg}'
     
     - name: run pytest
       run: |
