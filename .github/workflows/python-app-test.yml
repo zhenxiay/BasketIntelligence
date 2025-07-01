@@ -46,7 +46,7 @@ jobs:
 
     - name: Lint with pylint and export restults to html
       run: |
-        uv run pylint BasketIntelligence/ --fail-under 5.0 --msg-template='{msg_id}:{line:3d},{column}: {obj}: {msg}' | uv run pylint-json2html -o pylint.html
+        uv run pylint BasketIntelligence/ --fail-under 5.0 | uv run pylint-json2html -o pylint.html
 
     - name: Upload pylint HTML report
       uses: actions/upload-artifact@v4
