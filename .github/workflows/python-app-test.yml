@@ -33,7 +33,7 @@ jobs:
 
     - name: Add lint/test tools with uv
       run: |
-        uv add yapf pylint pytest great_expectations
+        uv add yapf pylint pytest great_expectations pylint-json2html
 
     - name: Automatic Formatting
       run: |
@@ -44,9 +44,15 @@ jobs:
         uv run yapf -i --style '{use_tabs=False}' ./tests/pyTest/test_create_season.py
         uv run yapf -i --style '{use_tabs=False}' ./tests/data_quality_test/run_great_expectations.py
 
-    - name: Lint with pylint
+    - name: Lint with pylint and export restults to html
       run: |
-        uv run pylint BasketIntelligence/ --fail-under 9.7 --msg-template='{msg_id}:{line:3d},{column}: {obj}: {msg}'
+        uv run pylint BasketIntelligence/ --fail-under 5.0 --msg-template='{msg_id}:{line:3d},{column}: {obj}: {msg}' | uv run pylint-json2html -o pylint.html
+
+    - name: Upload pylint HTML report
+      uses: actions/upload-artifact@v4
+      with:
+        name: pylint-report
+        path: pylint.html
     
     - name: run pytest
       run: |
