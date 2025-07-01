@@ -1,5 +1,8 @@
+
+# logger module provides some features to help to log and monitor the code execution.
 import logging
 
+# Logger function used by other modules to log messages.
 def get_logger():
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
@@ -10,7 +13,7 @@ def get_logger():
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         console_handler.setFormatter(formatter)
         logger.addHandler(console_handler)
-            
-    logger.info(f"Logger initialized")
+           
+    logger.info("Logger initialized")
 
     return logger
