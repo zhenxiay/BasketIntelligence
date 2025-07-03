@@ -35,11 +35,11 @@ class CreateSeason():
         X['Season'] = season
         return X
 
-    def get_dataframe_list(self):
+    def get_dataframe_list(self, url):
         '''
         This function returns a list of dataframes for html page.
         '''
-        list = pd.read_html(self.url_team_stats,
+        list = pd.read_html(url,
                             encoding='utf-8',
                             decimal='.',
                             thousands=',')
@@ -49,7 +49,7 @@ class CreateSeason():
         '''
         This function reads and converts the team shooting stats from the data source.
         '''
-        list = self.get_dataframe_list()
+        list = self.get_dataframe_list(url=self.url_team_stats)
 
         df_output = list[11]
 
@@ -69,7 +69,7 @@ class CreateSeason():
             X = X.assign(**{f'corner-{col}': df_corner_pct[col] for col in df_corner_pct.columns})
 
             # turn following columns from nested columns to single index columns:
-            # shoot attempts, pct per distance and corner 
+            # shoot attempts, pct per distance and corner
             selected_columns = X.filter(regex='(Team|FGA-|pct-|corner-)').columns
             X = X[selected_columns]
 
@@ -81,7 +81,7 @@ class CreateSeason():
 
             return X
 
-        # shape output dataframe with pipe and the functions defined above     
+        # shape output dataframe with pipe and the functions defined above
         df_output = (df_output
                 .pipe(convert_multi_index)
                 .pipe(self.drop_summary_rows)
@@ -97,7 +97,7 @@ class CreateSeason():
         '''
         This function reads and converts the team advanced stats from the data source.
         '''
-        list = self.get_dataframe_list()
+        list = self.get_dataframe_list(url=self.url_team_stats)
 
         df_output = list[10]
 
@@ -155,7 +155,7 @@ class CreateSeason():
         '''
         This function reads and converts the player per game stats from the data source.
         '''
-        list = self.get_dataframe_list()
+        list = self.get_dataframe_list(url=self.url_per_game)
 
         df_output = list[0]
 
@@ -222,7 +222,7 @@ class CreateSeason():
         '''
         This function reads and converts the player advanced stats from the data source.
         '''
-        list = self.get_dataframe_list()
+        list = self.get_dataframe_list(url=self.url_adv_stats)
 
         def define_schema(X):
             X = X.astype({
