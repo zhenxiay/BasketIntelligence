@@ -1,6 +1,6 @@
 [project]
 name = "BasketIntelligence"
-version = "0.1.8"
+version = "0.1.9"
 authors = [
     { name = "zhenxiay", email = "yu.zhenxiao.yz@gmail.com" },
 ]
