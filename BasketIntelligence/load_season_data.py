@@ -1,11 +1,11 @@
 
-from pyspark.sql import SparkSession
-from google.cloud import bigquery
-from sqlalchemy import create_engine
 from BasketIntelligence.create_season import CreateSeason
 from BasketIntelligence.ml_analysis import k_means_team_shooting_clustering, k_means_player_clustering
 from BasketIntelligence.utils.logger import get_logger
 from BasketIntelligence.utils.connect_sqlite import connect_sqlite
+from BasketIntelligence.utils.connect_postgres import connect_postgres
+from BasketIntelligence.utils.create_big_query_client import create_big_query_client
+from BasketIntelligence.utils.create_spark_session import get_spark
 
 class LoadSeasonData(CreateSeason):
     '''
@@ -19,13 +19,12 @@ class LoadSeasonData(CreateSeason):
 
 ############ database setups for postgres SQL ################################
 
-    @staticmethod
-    def connect_postgres(user, pwd, host, db):
-        engine = create_engine(f'postgresql://{user}:{pwd}@{host}:5432/{db}')
-        return engine
-
     def data_ingestion_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
-        engine = self.connect_postgres(user, pwd, host, db)
+        '''
+        define the function to load data into a postgres database.
+        This function is to be used by the methods below.
+        '''
+        engine = connect_postgres(user, pwd, host, db)
         engine.connect()
 
         dataset.to_sql(table_name,
@@ -37,6 +36,10 @@ class LoadSeasonData(CreateSeason):
 ############ database setups for sqlite3 ##################################
 
     def data_ingestion_sqlite(self,dataset,table_name,db_path,db_name) -> None:
+        '''
+        define the function to load data into a sqlite database.
+        This function is to be used by the methods below.
+        '''
         engine = connect_sqlite(db_path,db_name)
 
         dataset.to_sql(table_name,
@@ -48,16 +51,13 @@ class LoadSeasonData(CreateSeason):
 
 ############ database setups for MS fabric lakehouse ######################
 
-    @staticmethod
-    def get_spark():
-        spark = SparkSession \
-            .builder \
-            .appName("BasketIntelligence") \
-            .getOrCreate()
-        return spark
-
     def data_ingestion_lakehouse(self,dataset,name) -> None:
-        spark = self.get_spark()
+        '''
+        define the function to load data into a MS fabric lakehouse.
+        This function is to be used by the methods below.
+        '''
+        spark = get_spark()
+        self.logger.info("Spark session initialized...")
         dataset_spark = spark.createDataFrame(dataset)
 
         spark.sql(f"DROP TABLE IF EXISTS basketball_reference_{name}_{self.year}")
@@ -68,15 +68,13 @@ class LoadSeasonData(CreateSeason):
 
 ############ database setups for big query ###############
 
-    @staticmethod
-    def create_big_query_client():
-        client = bigquery.Client()
-        job_config = bigquery.LoadJobConfig(write_disposition="WRITE_TRUNCATE")
-        return client, job_config
-
     def data_ingestion_big_query(self,dataset,table_name) -> None:
+        '''
+        define the function to load data into a google big query database.
+        This function is to be used by the methods below.
+        '''
         table_id = f'{self.project}.{self.dataset_name}.{table_name}'
-        client, job_config = self.create_big_query_client()
+        client, job_config = create_big_query_client()
         client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
         self.logger.info(f'Data load to big query {table_id} successfully!')
 
