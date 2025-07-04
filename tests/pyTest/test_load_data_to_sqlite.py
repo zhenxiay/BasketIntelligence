@@ -20,4 +20,4 @@ def test_dynamic_load_adv_game_sqlite():
     data_source = 'adv_stats'
     db_type = 'sqlite'
 
-    dataset.load_data(data_source, db_type, **kwargs)
+    dataset.load_data(data_source, db_type, table_name, db_path, db_name)
