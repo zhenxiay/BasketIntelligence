@@ -68,25 +68,44 @@ dataset.read_team_adv_stats()
  
  Currently the libaray offers API to load data to postgresSQL, Google big query or to MS Fabric lakehouse:
  
- #### Create a dataset that is to be loaded with pollowing parameters:
+ #### Create a dataset that is to be loaded with following parameters:
  
  year, big query project id, dataset id and table id
 
  ```python
  from BasketIntelligence.load_season_data import LoadSeasonData
 
- dataset = LoadSeasonData("2025","gcp-project-id","BasketIntelligence")
+ loader = LoadSeasonData("2025","gcp-project-id","BasketIntelligence")
 ```
  
  #### Load to big query:
  
- 
+ ##### Legacy method
 ```python
- dataset.load_per_game_to_big_query("per_game_stats")
+ loader.load_per_game_to_big_query("per_game_stats")
+```
+
+ ##### Dynamic method
+```python
+ loader.load_data(
+        data_source='adv_stats',
+        db_type='big_query',
+        table_name='adv_stats'
+    )
 ```
  
  #### Load to MS fabric lakehouse:
  
+ ##### Legacy method
  ```python
- dataset.load_adv_stats_to_lakehouse()
+ loader.load_adv_stats_to_lakehouse()
  ```
+
+ ##### Dynamic method
+```python
+ loader.load_data(
+        data_source='adv_stats',
+        db_type='big_query',
+        name='adv_stats'
+    )
+```

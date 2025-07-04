@@ -9,3 +9,4 @@ def get_spark():
             .appName("BasketIntelligence") \
             .getOrCreate()
     return spark
+    
