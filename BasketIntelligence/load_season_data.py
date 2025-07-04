@@ -30,7 +30,7 @@ class LoadSeasonData(CreateSeason):
             'postgres': self.data_ingestion_postgres,
             'sqlite': self.data_ingestion_sqlite,
             'big_query': self.data_ingestion_big_query,
-            'lakehouse': self.data_ingestion_lakehouse,
+            'fabric_lakehouse': self.data_ingestion_lakehouse,
         }
 
 ############ database setups for postgres SQL ################################

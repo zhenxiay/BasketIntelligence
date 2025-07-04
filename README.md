@@ -105,7 +105,7 @@ dataset.read_team_adv_stats()
 ```python
  loader.load_data(
         data_source='adv_stats',
-        db_type='big_query',
+        db_type='fabric_lakehouse',
         name='adv_stats'
     )
 ```
