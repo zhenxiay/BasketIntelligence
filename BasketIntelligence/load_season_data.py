@@ -17,6 +17,22 @@ class LoadSeasonData(CreateSeason):
         self.dataset_name = dataset_name
         self.logger = get_logger()
 
+        self._DATA_SOURCES = {
+            'per_game': lambda: self.read_stats_per_game().drop(columns=['Awards']),
+            'adv_stats': lambda: self.read_adv_stats().drop(columns=['Awards']),
+            'team_adv_stats': self.read_team_adv_stats,
+            'team_shooting': self.read_team_shooting,
+            'kmeans_team_shooting': k_means_team_shooting_clustering,
+            'kmeans_player': k_means_player_clustering,
+        }
+
+        self._DB_INGESTION_MAPPING = {
+            'postgres': self.data_ingestion_postgres,
+            'sqlite': self.data_ingestion_sqlite,
+            'big_query': self.data_ingestion_big_query,
+            'lakehouse': self.data_ingestion_lakehouse,
+        }
+
 ############ database setups for postgres SQL ################################
 
     def data_ingestion_postgres(self,dataset,table_name,user,pwd,host,db) -> None:
@@ -77,6 +93,47 @@ class LoadSeasonData(CreateSeason):
         client, job_config = create_big_query_client()
         client.load_table_from_dataframe(dataset, table_id, job_config=job_config)
         self.logger.info(f'Data load to big query {table_id} successfully!')
+
+############ define a dynamic data load method ################
+
+    def load_data(self, data_source: str, db_type: str, **kwargs):
+        """
+        Loads data from a specified source to a specified database type.
+
+        :param data_source: The name of the data source to load.
+                            Options: 'per_game', 'adv_stats', 'team_adv_stats',
+                                     'team_shooting', 'kmeans_team_shooting', 'kmeans_player'.
+        :param db_type: The type of database to load the data into.
+                        Options: 'postgres', 'sqlite', 'big_query', 'lakehouse'.
+        :param kwargs: Database-specific connection parameters.
+                       - for postgres: table_name, user, pwd, host, db
+                       - for sqlite: table_name, db_path, db_name
+                       - for big_query: table_name
+                       - for lakehouse: name (used as part of the table name)
+                       - for kmeans sources: n_cluster
+        """
+        if data_source not in self._DATA_SOURCES:
+            raise ValueError(f"Invalid data source: {data_source}")
+        if db_type not in self._DB_INGESTION_MAPPING:
+            raise ValueError(f"Invalid db type: {db_type}")
+
+        self.logger.info(f"Loading data for '{data_source}' into '{db_type}'")
+
+        # Get the dataset
+        data_func = self._DATA_SOURCES[data_source]
+        if 'kmeans' in data_source:
+            if 'n_cluster' not in kwargs:
+                raise ValueError("n_cluster is required for kmeans data sources")
+            dataset = data_func(self.year, kwargs.pop('n_cluster'))
+        else:
+            dataset = data_func()
+
+        # Get the ingestion function and load data
+        ingestion_func = self._DB_INGESTION_MAPPING[db_type]
+        ingestion_func(dataset, **kwargs)
+
+        self.logger.info(f"Data loaded for '{data_source}' into '{db_type}' successfully!")
+        self.logger.info(f"Rows count: {len(data_source)}")
 
 ############ Methods for loading data into postgres SQL ##########################
 
