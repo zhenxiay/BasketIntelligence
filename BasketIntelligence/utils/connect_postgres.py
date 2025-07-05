@@ -6,3 +6,4 @@ def connect_postgres(user, pwd, host, db):
     '''
     engine = create_engine(f'postgresql://{user}:{pwd}@{host}:5432/{db}')
     return engine
+    

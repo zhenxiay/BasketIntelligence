@@ -7,3 +7,4 @@ def create_big_query_client():
     client = bigquery.Client()
     job_config = bigquery.LoadJobConfig(write_disposition="WRITE_TRUNCATE")
     return client, job_config
+    
