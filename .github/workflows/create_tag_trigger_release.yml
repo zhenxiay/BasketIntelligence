@@ -3,14 +3,14 @@ name: create tag for python library release
 
 on:
   push:
-    branches: none
+    tags: none
   # workflow can only be triggered manually
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
       tag:
         description: 'Git Hub tag for the release '
-        default: 'V1.0.0'
+        default: 'v1.0.0'
         required: true
         type: string
         
@@ -34,3 +34,21 @@ jobs:
         git push origin '${{ inputs.tag }}'
       env:
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install uv and build
+      run: |
+        pip install uv
+        uv build
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          BasketIntelligence/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
