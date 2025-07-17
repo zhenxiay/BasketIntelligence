@@ -13,6 +13,9 @@ on:
         default: 'V1.0.0'
         required: true
         type: string
+        
+permissions:
+  contents: write
 
 jobs:
   create_tag:
