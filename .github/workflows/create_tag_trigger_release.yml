@@ -34,25 +34,3 @@ jobs:
         git push origin '${{ inputs.tag }}'
       env:
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
-
-    # Check out the repository again to make sure the tag gets checked out
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-
-    - name: Install uv and build
-      run: |
-        pip install uv
-        uv build
-
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v2
-      with:
-        files: |
-          BasketIntelligence/*
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
