@@ -24,3 +24,5 @@ jobs:
         git config --global user.name "zhenxiay"
         git tag '${{ inputs.tag }}'
         git push origin '${{ inputs.tag }}'
+      env:
+          GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
