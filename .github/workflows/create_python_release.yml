@@ -21,15 +21,20 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install uv and build
+      - name: Install uv and build wheel
         run: |
           pip install uv
-          uv build
+          uv build --wheel
+
+      - name: Move wheel to release-artifacts folder
+        run: |
+          mkdir -p release-artifacts
+          mv dist/*.whl release-artifacts/
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            BasketIntelligence/*
+            release-artifacts/*
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
