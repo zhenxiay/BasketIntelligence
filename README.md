@@ -15,10 +15,16 @@ You can install this libary either with pip or uv. Choose the option that best s
 
 ### Option 1: Install with pip install
 
-Install using pip install:
+Install using pip install from GitHub repo:
 
 ```bash
 pip install git+https://github.com/zhenxiay/BasketIntelligence.git
+```
+
+Install using pip install from published release (.whl file):
+
+```bash
+pip install https://github.com/zhenxiay/BasketIntelligence/releases/download/v1.0.0/BasketIntelligence-1.0.0-py3-none-any.whl
 ```
 
 ### Option 2: Install with uv
