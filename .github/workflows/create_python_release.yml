@@ -1,7 +1,10 @@
 
 name: create_python_release
 
-on: push
+on: 
+  push:
+    tags:
+      - v*
 
 permissions:
   contents: write
@@ -11,24 +14,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        if: github.ref_type == 'tag'
         uses: actions/checkout@v4
 
       - name: Set up Python
-        if: github.ref_type == 'tag'
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
       - name: Install uv and build
-        if: github.ref_type == 'tag'
         run: |
           pip install uv
           uv build
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
-        if: github.ref_type == 'tag'
         with:
           files: |
             BasketIntelligence/*
