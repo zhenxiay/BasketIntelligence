@@ -3,7 +3,7 @@ name: data_ingestion_to_big_query
 
 on:
   push:
-    branches: none
+    branches: ["main"]
   # workflow can only be triggered manually
   workflow_dispatch:
     # Inputs the workflow accepts.
