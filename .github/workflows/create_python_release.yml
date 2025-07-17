@@ -28,5 +28,3 @@ jobs:
         with:
           files: |
             BasketIntelligence/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
