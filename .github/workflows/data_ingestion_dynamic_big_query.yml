@@ -1,6 +1,6 @@
 
 # This workflow triggers a full load of selected nba season data into a Google Big Query project
-name: data_ingestion_to_big_query
+name: data_ingestion_to_big_query_dynamic
 
 on:
   # workflow can only be triggered manually
