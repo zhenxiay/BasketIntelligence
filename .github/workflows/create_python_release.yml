@@ -1,50 +1,32 @@
+name: Build and Release Python Wheel
 
-name: create_python_release
-
-on: 
+on:
   push:
     tags:
-      - v*
-
-permissions:
-  contents: write
+      - 'v*'
 
 jobs:
-  build-and-release:
+  build-and-upload-wheel:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
-      - name: Install uv and build wheel
+      - name: Install uv
+        uses: astral-sh/setup-uv@v1
+
+      - name: Build wheel with uv
         run: |
-          pip install uv
           uv build --wheel
 
-      - name: Move wheel to release-artifacts folder
-        run: |
-          mkdir -p release-artifacts
-          mv dist/*.whl release-artifacts/
-
-      - name: Commit and push wheel to repository
-        run: |
-          git config --global user.name "zhenxiay"
-          git config --global user.email "yu.zhenxiao.yz@gmail.com"
-          git add release-artifacts/*.whl
-          git commit -m "Add wheel file for release ${{ github.ref }}"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create GitHub Release
+      - name: Upload wheel to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            release-artifacts/*.whl
+          files: dist/*.whl
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
