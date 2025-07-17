@@ -1,0 +1,26 @@
+# This workflow triggers a full load of selected nba season data into a Google Big Query project
+name: data_ingestion_to_big_query
+
+on:
+  # workflow can only be triggered manually
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      tag:
+        description: 'Git Hub tag for the release '
+        default: 'V1.0.0'
+        required: true
+        type: string
+
+jobs:
+  create_tag:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Create Tag and trigger release pipeline
+      run: |
+        git config --global user.email "yu.zhenxiao.yz@gmail.com"
+        git config --global user.name "zhenxiay"
+        git tag '${{ inputs.tag }}'
+        git push origin '${{ inputs.tag }}'
