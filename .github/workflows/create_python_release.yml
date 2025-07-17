@@ -1,12 +1,7 @@
-# .github/workflows/release.yml
+
 name: create_python_release
 
-on:
-  push:
-    tags:
-      - "v*.*.*"
-      
-  workflow_dispatch:
+on: push
 
 permissions:
   contents: write
@@ -30,6 +25,7 @@ jobs:
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
         with:
           files: |
             BasketIntelligence/*
