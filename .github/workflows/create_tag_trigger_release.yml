@@ -35,6 +35,10 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
 
+    # Check out the repository again to make sure the tag gets checked out
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
