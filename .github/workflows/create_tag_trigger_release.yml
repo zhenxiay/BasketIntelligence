@@ -1,9 +1,9 @@
-# This workflow triggers a full load of selected nba season data into a Google Big Query project
-name: data_ingestion_to_big_query
+# This workflow creates a new tag in the repo, which triggers another workflow to prepare a release
+name: create tag for python library release
 
 on:
   push:
-    branches: ["main"]
+    branches: none
   # workflow can only be triggered manually
   workflow_dispatch:
     # Inputs the workflow accepts.
@@ -20,6 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
     - name: Create Tag and trigger release pipeline
       run: |
         git config --global user.email "yu.zhenxiao.yz@gmail.com"
