@@ -31,6 +31,7 @@ class LoadSeasonData(CreateSeason):
             'sqlite': self.data_ingestion_sqlite,
             'big_query': self.data_ingestion_big_query,
             'fabric_lakehouse': self.data_ingestion_lakehouse,
+            'unity_catalog': self.data_ingestion_lakehouse,
         }
 
 ############ database setups for postgres SQL ################################
@@ -67,7 +68,7 @@ class LoadSeasonData(CreateSeason):
 
 ############ database setups for MS fabric lakehouse ######################
 
-    def data_ingestion_lakehouse(self,dataset,name) -> None:
+    def data_ingestion_lakehouse(self,dataset,table_name) -> None:
         '''
         define the function to load data into a MS fabric lakehouse.
         This function is to be used by the methods below.
@@ -76,11 +77,11 @@ class LoadSeasonData(CreateSeason):
         self.logger.info("Spark session initialized...")
         dataset_spark = spark.createDataFrame(dataset)
 
-        spark.sql(f"DROP TABLE IF EXISTS basketball_reference_{name}_{self.year}")
-        self.logger.info(f"Dropped table basketball_reference_{name}_{self.year} in the lakehouse...")
+        spark.sql(f"DROP TABLE IF EXISTS basketball_reference_{table_name}_{self.year}")
+        self.logger.info(f"Dropped table basketball_reference_{table_name}_{self.year} in the lakehouse...")
 
-        dataset_spark.write.saveAsTable(f"basketball_reference_{name}_{self.year}")
-        self.logger.info(f'load table basketball_reference_{name}_{self.year} successfully!')
+        dataset_spark.write.saveAsTable(f"basketball_reference_{table_name}_{self.year}")
+        self.logger.info(f'load table basketball_reference_{table_name}_{self.year} successfully!')
 
 ############ database setups for big query ###############
 
@@ -109,7 +110,7 @@ class LoadSeasonData(CreateSeason):
                        - for postgres: table_name, user, pwd, host, db
                        - for sqlite: table_name, db_path, db_name
                        - for big_query: table_name
-                       - for lakehouse: name (used as part of the table name)
+                       - for lakehouse/ unity catalog: table_name (used as part of the table name)
                        - for kmeans sources: n_cluster
         """
         if data_source not in self._DATA_SOURCES:
