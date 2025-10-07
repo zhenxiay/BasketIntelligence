@@ -78,9 +78,20 @@ dataset.read_adv_stats()
 dataset.read_team_adv_stats()
 ```
 
+## 📊 Available data
+
+| Item | Description |
+| :---- | :----------- |
+| `per_game` | Get the basic per game statistic of the players. |
+| `adv_stats` | Get the advanced statistics of the players. |
+| `team_adv_stats` | Get the advanced statistics of the teams. |
+| `team_shooting` | Get the shooting related statistics (FG distribution and rate) of the teams. |
+| `kmeans_team_shooting` | Get the teams clustering based on their shooting statistic and kmeans. |
+| `kmeans_player` | Get the players clustering based on their advanced statistic and kmeans. |
+
  ## Method to load data
  
- Currently the libaray offers API to load data to postgresSQL, Google big query or to MS Fabric lakehouse:
+ Currently the libaray offers API to load data to postgresSQL, Google big query, Databricks Unity Catalog or to MS Fabric lakehouse:
  
  #### Create a dataset that is to be loaded with following parameters:
  
@@ -120,6 +131,22 @@ dataset.read_team_adv_stats()
  loader.load_data(
         data_source='adv_stats',
         db_type='fabric_lakehouse',
-        name='adv_stats'
+        table_name='adv_stats'
+    )
+```
+
+#### Load to Databricks Unity Catalog:
+ 
+ ##### Dynamic method
+```python
+ #define the unity catalog and schema before loading
+ spark.sql('USE CATALOG your-catalog-name')
+
+ spark.sql('USE SCHEMA your-schema-name')
+
+ loader.load_data(
+        data_source='adv_stats',
+        db_type='unity_catalog',
+        table_name='adv_stats'
     )
 ```
