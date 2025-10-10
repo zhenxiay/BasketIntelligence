@@ -22,6 +22,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install uv
 
+      - name: Update package version
+        run: |
+          uv version --bump patch
+
       - name: Build wheel with uv
         run: |
           uv build --wheel
