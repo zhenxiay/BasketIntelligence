@@ -22,9 +22,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install uv
 
-      - name: Update package version
+      - name: Extract version from tag
+        id: get_version
         run: |
-          uv version --bump patch
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"
+
+      - name: Update pyproject.toml version
+        run: |
+          # Update version in pyproject.toml to match the tag
+          sed -i "s/^version = .*/version = \"${{ steps.get_version.outputs.version }}\"/" pyproject.toml
+          
+          # Verify the change
+          grep "^version" pyproject.toml
 
       - name: Build wheel with uv
         run: |
