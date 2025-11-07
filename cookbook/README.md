@@ -51,7 +51,7 @@ uv run cookbook/example_agno_os.py --season '2024'
 
 ## Demo
 
-![alt text](demo_img/img_1.png)
+![alt text](demo_img/image.png)
 
 
 ![alt text](demo_img/img_2.png)
