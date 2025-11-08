@@ -19,6 +19,7 @@ dependencies = [
     "pyarrow",
     "scikit-learn",
     "numpy",
+    "dotenv>=0.9.9",
 ]
 
 [project.urls]

@@ -51,16 +51,8 @@ uv run cookbook/example_agno_os.py --season '2024'
 
 ## Demo
 
-![alt text](demo_img/image.png)
+The following gif shows how the response is streamed when the cookbook file gets executed.
 
+For more impressions, please check the screenshots in the demo_img folder!
 
-![alt text](demo_img/img_2.png)
-
-
-![alt text](demo_img/img_3.png)
-
-
-![alt text](demo_img/img_4.png)
-
-
-![alt text](demo_img/img_5.png)
+![alt text](demo_img/basket_intelligence_demo.gif)
