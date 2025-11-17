@@ -41,7 +41,9 @@ Execute the following command to see the outcome.
 
 Make sure that you are executing the command from the project root folder.
 
-You can add the stock of your choice with the flag --season.
+The cookbook files are configured with flags which take parameter values.
+
+For instance, you can add the season of your choice with the flag --season for the file example_agno_os.py:
 
 #### Example of usage
 

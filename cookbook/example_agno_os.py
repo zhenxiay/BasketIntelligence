@@ -34,10 +34,8 @@ def get_team_shooting_stats(
 
 async def run_agent(season: str) -> None:
     '''
-    Run the financial analyst agent with the given message.
-    The agent is connected with the tools from the MCP server stock_intelligence_cmp.
-    Make sure that the MCP server is running before executing this script.
-    In this example, this server is running on localhost port 8008 with streamable-http transport.
+    Run the basketball analyst agent with the given message.
+    The agent is connected with the tools from the library BasketIntelligence.
     '''
     
     message = f'''
