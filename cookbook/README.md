@@ -1,0 +1,68 @@
+# Cookbook with Agno OS
+
+Welcome to the cookbook section! 
+Here you will find examples how this library can interact with an agentic AI app like **Agno OS**.
+
+## Setup
+
+### Create and activate a virtual environment
+
+```shell
+uv venv cookbook
+
+# bash
+source cookbook/bin/activate
+
+#powershell
+.venv/scripts/activate
+
+```
+
+### Install libraries
+
+```shell
+uv pip install -U anthropic openai agno
+```
+
+### Configure LLM for the agent (OpenAI or ANTHROPIC)
+
+Run the following command to create a .env file.
+
+Add your ANTHROPIC_API_KEY or OPENAI_API_KEY to the file.
+
+```bash
+cp template.env .env
+# Edit .env with your Open AI API key
+```
+
+## Run a cookbook
+
+Execute the following command to see the outcome.
+
+Make sure that you are executing the command from the project root folder.
+
+The cookbook files are configured with flags which take parameter values.
+
+For instance, you can add the season of your choice with the flag --season for the file example_agno_os.py:
+
+#### Example of usage - Season Analysis
+
+```shell
+uv run cookbook/example_agno_os.py --season '2024'
+```
+
+Another example, with which you can generate a game report based on the play-to-play statistic:
+
+#### Example of usage - Geme Report Generator
+
+```shell
+uv run cookbook/example_game_report.py --date 'November 16th, 2025' --home-team 'Houston Rockets' --away-team 'Orlando Magic'
+```
+
+## Demo
+
+The following gif shows how the response is streamed when the cookbook file gets executed.
+
+For more impressions, please check the screenshots in the demo_img folder!
+
+![alt text](demo_img/basket_intelligence_demo.gif)
