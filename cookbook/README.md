@@ -45,10 +45,18 @@ The cookbook files are configured with flags which take parameter values.
 
 For instance, you can add the season of your choice with the flag --season for the file example_agno_os.py:
 
-#### Example of usage
+#### Example of usage - Season Analysis
 
 ```shell
 uv run cookbook/example_agno_os.py --season '2024'
+```
+
+Another example, with which you can generate a game report based on the play-to-play statistic:
+
+#### Example of usage - Geme Report Generator
+
+```shell
+uv run cookbook/example_game_report.py --date 'November 16th, 2025' --home-team 'Houston Rockets' --away-team 'Orlando Magic'
 ```
 
 ## Demo
