@@ -21,7 +21,7 @@ source cookbook/bin/activate
 ### Install libraries
 
 ```shell
-uv pip install -U anthropic openai agno
+uv pip install -U anthropic openai agno pandas-toon
 ```
 
 ### Configure LLM for the agent (OpenAI or ANTHROPIC)
