@@ -26,7 +26,7 @@ from BasketIntelligence.create_season import CreateSeason
 
 dataset = CreateSeason('2025')
 
-dataset.read_per_game()
+dataset.read_stats_per_game()
 ```
 
 ### Example 2: Fetch team advanced statistics per game
