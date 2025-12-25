@@ -22,12 +22,20 @@ Use this skill when you are requested to fetch following statistics:
 
 ### Example 1: Fetch player statistics per game
 ```python
+from BasketIntelligence.create_season import CreateSeason
 
+dataset = CreateSeason('2025')
+
+dataset.read_per_game()
 ```
 
 ### Example 2: Fetch team advanced statistics per game
 ```python
+from BasketIntelligence.create_season import CreateSeason
 
+dataset = CreateSeason('2025')
+
+dataset.read_team_adv_stats()
 ```
 
 ## Guidelines
