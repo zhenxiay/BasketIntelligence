@@ -15,7 +15,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 import pandas as pd
-import pandas-toon
+import pandas_toon
 
 from agno.agent import Agent
 from agno.tools import tool
