@@ -15,6 +15,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 import pandas as pd
+import pandas-toon
 
 from agno.agent import Agent
 from agno.tools import tool
@@ -37,7 +38,7 @@ def get_game_report(
 
     df = pd.read_html(url)[0].droplevel(0, axis=1)
 
-    return df.to_markdown()
+    return df.to_toon()
 
 async def run_agent(date: str, home_team: str, away_team: str) -> None:
     
