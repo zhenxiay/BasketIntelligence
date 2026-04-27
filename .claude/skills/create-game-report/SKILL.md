@@ -1,5 +1,5 @@
 ---
-name: create-game-report-guide
+name: create-game-report
 description: Guide for AI agent to create game report of a selected NBA game.
 ---
 
