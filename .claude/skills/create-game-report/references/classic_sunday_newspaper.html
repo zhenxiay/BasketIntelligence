@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sports Gazette: Rockets vs. Magic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper-bg: #f4f1ea;
+            --ink-black: #1a1a1a;
+            --ink-light: #444444;
+            --rockets-red: #CE1141; /* The single pop of color */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--paper-bg);
+            color: var(--ink-black);
+            font-family: 'Merriweather', serif;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .broadsheet {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--paper-bg);
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            padding: 40px;
+            border: 1px solid #dcd7cb;
+        }
+
+        /* Masthead */
+        .masthead {
+            text-align: center;
+            border-bottom: 5px solid var(--ink-black);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .masthead h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .dateline {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--ink-black);
+            border-bottom: 1px solid var(--ink-black);
+            padding: 5px 0;
+            font-family: sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        /* Headlines */
+        .headline {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            text-align: center;
+            margin: 30px 0 15px 0;
+        }
+
+        .subhead {
+            text-align: center;
+            font-style: italic;
+            font-size: 1.4rem;
+            color: var(--ink-light);
+            margin-bottom: 30px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Multi-column Layout */
+        .content-columns {
+            column-count: 2;
+            column-gap: 40px;
+            text-align: justify;
+            margin-bottom: 40px;
+        }
+
+        /* Drop Cap */
+        .first-paragraph::first-letter {
+            float: left;
+            font-size: 5rem;
+            line-height: 0.8;
+            padding-top: 4px;
+            padding-right: 8px;
+            padding-left: 3px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        /* Box Score */
+        .box-score {
+            border: 3px double var(--ink-black);
+            padding: 20px;
+            text-align: center;
+            margin: 40px 0;
+            background-color: #eeeae0;
+        }
+
+        .box-score h3 {
+            font-family: sans-serif;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--ink-light);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .score-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .team-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .team-score {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+        }
+
+        /* The Pop of Color */
+        .winner {
+            color: var(--rockets-red);
+        }
+
+        /* Sections */
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--ink-black);
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+
+        /* Play Log */
+        .play-log {
+            list-style: none;
+        }
+
+        .play-log li {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .play-time {
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Tables for Stats */
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            font-family: sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .stats-table th, .stats-table td {
+            border: 1px solid var(--ink-black);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .stats-table th {
+            background-color: var(--ink-black);
+            color: var(--paper-bg);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stats-table tr:nth-child(even) {
+            background-color: #ebe7dd;
+        }
+
+        .footer {
+            text-align: center;
+            border-top: 1px solid var(--ink-black);
+            padding-top: 10px;
+            margin-top: 40px;
+            font-family: sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-columns {
+                column-count: 1;
+            }
+            .headline {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="broadsheet">
+        <div class="masthead">
+            <h1>The Sunday Gazette</h1>
+            <div class="dateline">
+                <span>Vol. CXXIV — No. 42</span>
+                <span>Houston, Texas • Sunday, November 16, 2025</span>
+                <span>Sports Section</span>
+            </div>
+        </div>
+
+        <h2 class="headline">ROCKETS SURVIVE MAGIC IN OVERTIME THRILLER</h2>
+        <h3 class="subhead">Şengün forces OT at the buzzer; Durant and Thompson seal the victory in a 117-113 classic.</h3>
+
+        <div class="box-score">
+            <h3>Final Result</h3>
+            <div class="score-display">
+                <div>
+                    <div class="team-name">Orlando</div>
+                    <div class="team-score">113</div>
+                </div>
+                <div style="font-family: sans-serif; font-weight: bold; color: var(--ink-light);">FINAL (OT)</div>
+                <div>
+                    <div class="team-name winner">Houston</div>
+                    <div class="team-score winner">117</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-columns">
+            <p class="first-paragraph">
+                In a contest that will be remembered long after the season's end, the Houston Rockets outlasted a tenacious Orlando Magic squad at the Toyota Center on Sunday night. It was a game defined by sheer willpower, shifting momentums, and a breathtaking final minute of regulation that left the crowd in absolute awe.
+            </p>
+            <p>
+                Trailing by three with less than half a minute remaining, the Rockets turned to the veteran poise of Kevin Durant, who calmly sank a twenty-six-foot jumper to knot the score. The Magic answered immediately, as Anthony Black drove the lane for a resounding dunk with a single second left on the clock.
+            </p>
+            <p>
+                But it was Alperen Şengün who delivered the final word in regulation. Catching an inbound pass with no margin for error, Şengün lofted a five-foot hook shot that found the bottom of the net as the buzzer sounded, sending the arena into a frenzy and the game into an extra period.
+            </p>
+            <p>
+                In overtime, Houston's experience shone through. Durant struck again with a critical mid-range jumper, and Amen Thompson showed ice in his veins by sinking two free throws in the closing moments to secure the 117-113 victory. The Magic, led by Franz Wagner and Desmond Bane, fought valiantly, but fell just short in the trenches.
+            </p>
+        </div>
+
+        <h4 class="section-title">Dispatch Notes: Critical Plays</h4>
+        <ul class="play-log">
+            <li>
+                <span class="play-time">4th Quarter — 0:21</span>
+                Kevin Durant hits a clutch 26-foot three-pointer to tie the game at 100-100, completing a late Houston rally.
+            </li>
+            <li>
+                <span class="play-time">4th Quarter — 0:01</span>
+                Anthony Black drives to the rim for a thunderous dunk, giving the Magic a 102-100 lead.
+            </li>
+            <li>
+                <span class="play-time">4th Quarter — 0:00</span>
+                Alperen Şengün catches the inbound and sinks a 5-foot hook shot at the buzzer to tie the game and force overtime.
+            </li>
+            <li>
+                <span class="play-time">Overtime — 0:09</span>
+                Kevin Durant extends the Rockets' lead to 113-110 with a steady 12-foot jump shot.
+            </li>
+            <li>
+                <span class="play-time">Overtime — 0:01</span>
+                Amen Thompson calmly sinks two free throws to put the game out of reach.
+            </li>
+        </ul>
+
+        <h4 class="section-title">Tale of the Tape</h4>
+        <table class="stats-table">
+            <thead>
+                <tr>
+                    <th>Statistic</th>
+                    <th>Orlando Magic</th>
+                    <th>Houston Rockets</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Points in the Paint</strong></td>
+                    <td>44</td>
+                    <td class="winner"><strong>58</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Second Chance Points</strong></td>
+                    <td>12</td>
+                    <td class="winner"><strong>18</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Fast Break Points</strong></td>
+                    <td class="winner"><strong>19</strong></td>
+                    <td>14</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="content-columns">
+            <h4 class="section-title">Notable Performances</h4>
+            <p><strong>Alperen Şengün (HOU):</strong> The anchor of the Houston offense, dominating the post and securing the game-saving buzzer-beater.</p>
+            <p><strong>Kevin Durant (HOU):</strong> The consummate professional, delivering clutch scoring exactly when his team required it most.</p>
+            <p><strong>Franz Wagner (ORL):</strong> The primary engine for the Magic, distributing the ball and finding the rim with consistency.</p>
+            <p><strong>Desmond Bane (ORL):</strong> A constant perimeter threat, hitting contested jumpers to keep Orlando ahead for much of the evening.</p>
+        </div>
+
+        <div class="footer">
+            Typeset by Gemini CLI • Data sourced from the Basketball Reference Wire
+        </div>
+    </div>
+
+</body>
+</html>

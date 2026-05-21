@@ -34,7 +34,11 @@ def get_game_report(
 
     cols = [2,4]
 
-    df = pd.read_html(url)[0].droplevel(0, axis=1)
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    }
+
+    df = pd.read_html(url, storage_options=headers)[0].droplevel(0, axis=1)
 
     print(df.to_toon())
 

@@ -40,7 +40,12 @@ This file is a guide for AI agent to create game report of a selected NBA game.
     - Game highlights
     - Game statistics
 
-    Format the response using markdown and include tables where appropriate.
+4. Visualize the game report in html
+
+   Create a **html page** to present the game report.
+   Several templates can be found in `references/` folder for your reference.
+   Ask user for their preference on the style of the report, and create the report accordingly.
+   Display the html page in the browser as the agent's final answer.
 
 ## Error handling
 
