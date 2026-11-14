@@ -21,6 +21,12 @@ Install using pip install from GitHub repo:
 pip install git+https://github.com/zhenxiay/BasketIntelligence.git
 ```
 
+This installs the lightweight version without PySpark. To include Spark support, use:
+
+```bash
+pip install "BasketIntelligence[spark] @ git+https://github.com/zhenxiay/BasketIntelligence.git"
+```
+
 Install using pip install from published release (.whl file):
 
 ```bash
