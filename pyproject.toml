@@ -9,7 +9,7 @@ readme = "README.md"
 requires-python = ">=3.8" # Assuming Python 3.8 or newer, adjust if needed
 dependencies = [
     "pandas",
-    "pyspark==3.5.1",
+    "pyspark>=3.5.1,<4",
     "google",
     "google-cloud",
     "google-cloud-bigquery",

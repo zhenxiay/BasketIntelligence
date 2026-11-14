@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'pandas',
-        'pyspark==3.5.1',
+        'pyspark>=3.5.1,<4',
         'google',
         'google-cloud',
         'google-cloud-bigquery',
