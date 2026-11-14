@@ -6,7 +6,6 @@ setup(
     packages=find_packages(),
     install_requires=[
         'pandas',
-        'pyspark==3.5.1',
         'google',
         'google-cloud',
         'google-cloud-bigquery',
@@ -15,6 +14,9 @@ setup(
         "scikit-learn",
         'numpy'
     ],
+    extras_require={
+        'spark': ['pyspark==3.5.1'],
+    },
     author="zhenxiay",
     author_email="yu.zhenxiao.yz@gmail.com",
     url="https://github.com/zhenxiay/BaseketIntelligence"

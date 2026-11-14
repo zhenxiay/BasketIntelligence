@@ -9,7 +9,6 @@ readme = "README.md"
 requires-python = ">=3.8" # Assuming Python 3.8 or newer, adjust if needed
 dependencies = [
     "pandas",
-    "pyspark==3.5.1",
     "google",
     "google-cloud",
     "google-cloud-bigquery",
@@ -21,6 +20,9 @@ dependencies = [
     "numpy",
     "dotenv>=0.9.9",
 ]
+
+[project.optional-dependencies]
+spark = ["pyspark==3.5.1"]
 
 [project.urls]
 Homepage = "https://github.com/zhenxiay/BaseketIntelligence"
