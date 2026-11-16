@@ -28,5 +28,10 @@ jobs:
       - name: Install skill-validator
         run: go install github.com/agent-ecosystem/skill-validator/cmd/skill-validator@latest
 
-      - name: Validate changed skills
-        run: bash .github/scripts/validate-skills.sh "${{ github.base_ref }}" "$SKILLS_DIR"
+      - name: Show skill-validator version
+        run: skill-validator --version
+
+      - name: Validate skills
+        run: |
+          skill-validator check --strict --emit-annotations .claude/skills/
+          skill-validator check --strict -o markdown .claude/skills/ >> "$GITHUB_STEP_SUMMARY"
