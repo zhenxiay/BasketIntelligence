@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Dashboard: Magic vs. Rockets (Dark Mode)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Dark Mode Palette */
+            --bg-color: #0f1115;
+            --card-bg: #1a1d24;
+            --text-main: #e4e6eb;
+            --text-muted: #a0a3ab;
+            --rockets-red: #CE1141;
+            --magic-blue: #0077C0;
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.6);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --highlight-bg: #22262f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* Glassmorphism Header (Dark) */
+        header {
+            background: rgba(26, 29, 36, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px;
+            text-align: center;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 2fr 1fr;
+                grid-template-areas: 
+                    "score score"
+                    "summary top-performers"
+                    "highlights stats";
+            }
+        }
+
+        /* Base Card Style */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        /* SVG Icons */
+        .card h2 svg {
+            color: var(--text-muted);
+        }
+
+        /* Scoreboard Card */
+        .score-card {
+            grid-area: score;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1f232b 0%, #15171c 100%);
+        }
+
+        .team {
+            text-align: center;
+            flex: 1;
+        }
+
+        .team-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .score {
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .magic-score { color: #3db4f2; } /* Lightened blue for dark mode */
+        .rockets-score { color: #f53d6b; } /* Lightened red for dark mode */
+
+        .game-status {
+            text-align: center;
+            padding: 10px 30px;
+            background: var(--bg-color);
+            border-radius: 20px;
+            font-weight: 800;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Summary Card */
+        .summary-card {
+            grid-area: summary;
+        }
+        
+        .summary-card p {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            line-height: 1.8;
+        }
+
+        /* Highlights Card */
+        .highlights-card {
+            grid-area: highlights;
+        }
+
+        .highlight-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--highlight-bg);
+            border-radius: 8px;
+            border-left: 4px solid var(--rockets-red);
+        }
+
+        .highlight-item:nth-child(even) {
+            border-left-color: var(--magic-blue);
+        }
+
+        .highlight-time {
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            min-width: 100px;
+            text-transform: uppercase;
+        }
+
+        .highlight-desc {
+            font-size: 0.95rem;
+        }
+
+        /* Top Performers Card */
+        .performers-card {
+            grid-area: top-performers;
+        }
+
+        .performer {
+            display: flex;
+            flex-direction: column;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .performer:last-child {
+            border-bottom: none;
+        }
+
+        .perf-name {
+            font-weight: 800;
+            font-size: 1rem;
+        }
+        
+        .perf-team {
+            font-size: 0.8rem;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+        
+        .bg-hou { background-color: var(--rockets-red); }
+        .bg-orl { background-color: var(--magic-blue); }
+
+        .perf-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Stats Card */
+        .stats-card {
+            grid-area: stats;
+        }
+
+        .stat-row {
+            margin-bottom: 15px;
+        }
+
+        .stat-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .stat-bar-container {
+            display: flex;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #2a2e38; /* Darker track for the bars */
+        }
+
+        .stat-bar-orl {
+            background-color: var(--magic-blue);
+            height: 100%;
+        }
+
+        .stat-bar-hou {
+            background-color: var(--rockets-red);
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Game Intelligence Dashboard</h1>
+        <p>Nov 16, 2025 • Toyota Center</p>
+    </header>
+
+    <div class="dashboard-grid">
+        
+        <!-- Score Board -->
+        <div class="card score-card">
+            <div class="team">
+                <div class="team-name">Orlando Magic</div>
+                <div class="score magic-score">113</div>
+            </div>
+            <div class="game-status">FINAL (OT)</div>
+            <div class="team">
+                <div class="team-name">Houston Rockets</div>
+                <div class="score rockets-score">117</div>
+            </div>
+        </div>
+
+        <!-- Game Summary -->
+        <div class="card summary-card">
+            <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Executive Summary</h2>
+            <p>
+                In a thrilling overtime contest at the Toyota Center, the Houston Rockets outlasted the Orlando Magic 117-113. 
+                The game was a back-and-forth affair that saw both teams trade blows in the final minutes of regulation. 
+                A clutch three-pointer by Kevin Durant tied the game, only for Anthony Black to reclaim the lead with a dunk. However, 
+                Alperen Şengün's buzzer-beating hook shot forced the extra period, where the Rockets' execution down the stretch secured the victory.
+            </p>
+        </div>
+
+        <!-- Top Performers -->
+        <div class="card performers-card">
+            <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> Key Contributors</h2>
+            
+            <div class="performer">
+                <div><span class="perf-name">Alperen Şengün</span><span class="perf-team bg-hou">HOU</span></div>
+                <div class="perf-desc">Dominant post play and the game-tying buzzer-beater in regulation.</div>
+            </div>
+            
+            <div class="performer">
+                <div><span class="perf-name">Kevin Durant</span><span class="perf-team bg-hou">HOU</span></div>
+                <div class="perf-desc">Clutch scoring, tying the game late in the 4th and extending the lead in OT.</div>
+            </div>
+            
+            <div class="performer">
+                <div><span class="perf-name">Franz Wagner</span><span class="perf-team bg-orl">ORL</span></div>
+                <div class="perf-desc">Primary offensive engine for the Magic with consistent playmaking.</div>
+            </div>
+            
+            <div class="performer">
+                <div><span class="perf-name">Desmond Bane</span><span class="perf-team bg-orl">ORL</span></div>
+                <div class="perf-desc">Lethal perimeter shooting kept Orlando competitive throughout.</div>
+            </div>
+        </div>
+
+        <!-- Play-by-Play Highlights -->
+        <div class="card highlights-card">
+            <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Crucial Moments</h2>
+            
+            <div class="highlight-item">
+                <div class="highlight-time">Q4 • 0:21</div>
+                <div class="highlight-desc">Kevin Durant hits a clutch 26-foot three-pointer to tie the game at 100-100, capping off a Rockets comeback.</div>
+            </div>
+            
+            <div class="highlight-item">
+                <div class="highlight-time">Q4 • 0:01</div>
+                <div class="highlight-desc">Anthony Black drives to the rim for a thunderous dunk, giving the Magic a 102-100 lead with just one second remaining.</div>
+            </div>
+            
+            <div class="highlight-item">
+                <div class="highlight-time">Q4 • 0:00</div>
+                <div class="highlight-desc">Alperen Şengün catches the inbound and sinks a 5-foot hook shot at the buzzer to tie the game and send it to overtime.</div>
+            </div>
+            
+            <div class="highlight-item">
+                <div class="highlight-time">OT • 0:09</div>
+                <div class="highlight-desc">Kevin Durant extends the Rockets' lead to 113-110 with a steady 12-foot jump shot.</div>
+            </div>
+            
+            <div class="highlight-item">
+                <div class="highlight-time">OT • 0:01</div>
+                <div class="highlight-desc">Amen Thompson calmly sinks two free throws to put the game out of reach, sealing the 117-113 victory.</div>
+            </div>
+        </div>
+
+        <!-- Head-to-Head Stats -->
+        <div class="card stats-card">
+            <h2><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> Head-to-Head Metrics</h2>
+            
+            <div class="stat-row">
+                <div class="stat-label">
+                    <span>ORL 44</span>
+                    <span>Points in Paint</span>
+                    <span>58 HOU</span>
+                </div>
+                <div class="stat-bar-container">
+                    <!-- ORL 43%, HOU 57% -->
+                    <div class="stat-bar-orl" style="width: 43%;"></div>
+                    <div class="stat-bar-hou" style="width: 57%;"></div>
+                </div>
+            </div>
+
+            <div class="stat-row">
+                <div class="stat-label">
+                    <span>ORL 12</span>
+                    <span>Second Chance Points</span>
+                    <span>18 HOU</span>
+                </div>
+                <div class="stat-bar-container">
+                    <!-- ORL 40%, HOU 60% -->
+                    <div class="stat-bar-orl" style="width: 40%;"></div>
+                    <div class="stat-bar-hou" style="width: 60%;"></div>
+                </div>
+            </div>
+
+            <div class="stat-row">
+                <div class="stat-label">
+                    <span>ORL 19</span>
+                    <span>Fast Break Points</span>
+                    <span>14 HOU</span>
+                </div>
+                <div class="stat-bar-container">
+                    <!-- ORL 58%, HOU 42% -->
+                    <div class="stat-bar-orl" style="width: 58%;"></div>
+                    <div class="stat-bar-hou" style="width: 42%;"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
