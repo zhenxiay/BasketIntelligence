@@ -2,6 +2,12 @@ name: Build and Release Python Wheel
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to build and publish
+        required: true
+        default: v1.0.3
+        type: string
   push:
     tags:
       - 'v*'
@@ -12,9 +18,14 @@ permissions:
 jobs:
   build-and-upload-wheel:
     runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -29,7 +40,7 @@ jobs:
       - name: Extract version from tag
         id: get_version
         run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
+          VERSION="${RELEASE_TAG#v}"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"
 
@@ -48,5 +59,6 @@ jobs:
       - name: Upload wheel to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.RELEASE_TAG }}
           files: dist/*.whl
           token: ${{ github.token }}
